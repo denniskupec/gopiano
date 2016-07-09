@@ -2,7 +2,7 @@
 Package gopiano provides a thin wrapper library around the Pandora.com client API.
 
 This client API has been reverse engineered and documentation is available at
-http://pan-do-ra-api.wikia.com/wiki/Json/5.
+https://6xq.net/pandora-apidoc/
 
 The package provides a Client struct with a myriad of methods which interact with the
 Pandora JSON API's own methods. Each method returns a struct of the parsed JSON data and an error.
