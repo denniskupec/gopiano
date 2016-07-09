@@ -38,37 +38,6 @@ type ClientDescription struct {
 	Version     string
 }
 
-// The data for the Android client.
-var AndroidClient ClientDescription = ClientDescription{
-	DeviceModel: "android-generic",
-	Username:    "android",
-	Password:    "AC7IBG09A3DTSYM4R41UJWL07VLN8JI7",
-	BaseURL:     "tuner.pandora.com/services/json/",
-	EncryptKey:  "6#26FRL$ZWD",
-	DecryptKey:  "R=U!LH$O2B#",
-	Version:     "5",
-}
-
-var AirClient ClientDescription = ClientDescription{
-	DeviceModel: "D01",
-	Username:    "pandora one",
-	Password:    "TVCKIBGS9AO9TSYLNNFUML0743LH82D",
-	BaseURL:     "internal-tuner.pandora.com/services/json/",
-	EncryptKey:  "2%3WCL*JU$MP]4",
-	DecryptKey:  "U#IO$RZPAB%VX2",
-	Version:     "5",
-}
-
-var IOSClient ClientDescription = ClientDescription{
-	DeviceModel: "IP01",
-	Username:    "iphone",
-	Password:    "P2E4FC0EAD3*878N92B2CDp34I0B1@388137C",
-	BaseURL:     "tuner.pandora.com/services/json/",
-	EncryptKey:  "721^26xE22776",
-	DecryptKey:  "20zE1E47BE57$51",
-	Version:     "5",
-}
-
 // Class for a Client object.
 type Client struct {
 	description      ClientDescription
