@@ -42,7 +42,6 @@ type ClientDescription struct {
 // Class for a Client object.
 type Client struct {
 	description      ClientDescription
-	http             *http.Client
 	encrypter        *blowfish.Cipher
 	decrypter        *blowfish.Cipher
 	timeOffset       time.Duration
@@ -54,7 +53,6 @@ type Client struct {
 
 // Create a new Client with specified ClientDescription
 func NewClient(d ClientDescription) (*Client, error) {
-	client := new(http.Client)
 	encrypter, err := blowfish.NewCipher([]byte(d.EncryptKey))
 	if err != nil {
 		return nil, err
@@ -65,7 +63,6 @@ func NewClient(d ClientDescription) (*Client, error) {
 	}
 	return &Client{
 		description: d,
-		http:        client,
 		encrypter:   encrypter,
 		decrypter:   decrypter,
 	}, nil
@@ -95,7 +92,7 @@ func (c *Client) decrypt(data string) (string, error) {
 // the "method" url argument and specifies the remote procedure to call, body is an io.Reader
 // to be passed directly into http.Post, and data is to be passed to json.Unmarshal to parse
 // the JSON response.
-func (c *Client) PandoraCall(callUrl string, body io.Reader, data interface{}) error {
+func PandoraCall(callUrl string, body io.Reader, data interface{}) error {
 	req, err := http.NewRequest("POST", callUrl, body)
 	if err != nil {
 		return err
@@ -103,7 +100,7 @@ func (c *Client) PandoraCall(callUrl string, body io.Reader, data interface{}) e
 	//req.Header.Add("User-Agent", "gopiano")
 	req.Header.Add("Content-type", "text/plain")
 
-	resp, err := c.http.Do(req)
+	resp, err := new(http.Client).Do(req)
 	if err != nil {
 		return err
 	}
@@ -164,7 +161,7 @@ func (c *Client) BlowfishCall(protocol string, method string, body io.Reader, da
 	enc := coder.New(c.encrypter)
 	enc.Write(bodyBytes)
 
-	return c.PandoraCall(c.formatURL(protocol, method), enc, data)
+	return PandoraCall(c.formatURL(protocol, method), enc, data)
 }
 
 // Most calls require a SyncTime int argument (Unix epoch). We store our current time offset
