@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/cellofellow/gopiano/requests"
-	"github.com/cellofellow/gopiano/responses"
+	"denniskupec.com/gopiano/requests"
+	"denniskupec.com/gopiano/responses"
 )
 
 // Client.ExplainTrack retrieves an incomplete list of attributes assigned specified son by the

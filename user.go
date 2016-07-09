@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/cellofellow/gopiano/requests"
-	"github.com/cellofellow/gopiano/responses"
+	"denniskupec.com/gopiano/requests"
+	"denniskupec.com/gopiano/responses"
 )
 
 // Client.UserCanSubscribe returns whehter a user is subscribed or can subscribe

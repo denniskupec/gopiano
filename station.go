@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/denniskupec/gopiano/requests"
-	"github.com/denniskupec/gopiano/responses"
+	"denniskupec.com/gopiano/requests"
+	"denniskupec.com/gopiano/responses"
 )
 
 // Client.StationAddFeedback adds feedback (thumbs up or down, or star or ban if you prefer) to a song.

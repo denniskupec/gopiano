@@ -24,7 +24,7 @@ import (
 
 	"golang.org/x/crypto/blowfish"
 
-	"github.com/denniskupec/gopiano/responses"
+	"denniskupec.com/gopiano/responses"
 )
 
 // Describes a particular type of client to emulate.
