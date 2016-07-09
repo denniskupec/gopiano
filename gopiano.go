@@ -93,14 +93,7 @@ func (c *Client) decrypt(data string) (string, error) {
 // to be passed directly into http.Post, and data is to be passed to json.Unmarshal to parse
 // the JSON response.
 func PandoraCall(callUrl string, body io.Reader, data interface{}) error {
-	req, err := http.NewRequest("POST", callUrl, body)
-	if err != nil {
-		return err
-	}
-	//req.Header.Add("User-Agent", "gopiano")
-	req.Header.Add("Content-type", "text/plain")
-
-	resp, err := new(http.Client).Do(req)
+	resp, err := http.Post(callUrl, "text/plain", body)
 	if err != nil {
 		return err
 	}
