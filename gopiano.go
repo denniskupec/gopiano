@@ -107,6 +107,7 @@ func (c *Client) PandoraCall(callUrl string, body io.Reader, data interface{}) e
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	var errResp responses.ErrorResponse
 	responseBody, err := ioutil.ReadAll(resp.Body)
