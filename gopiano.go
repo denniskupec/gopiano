@@ -95,24 +95,7 @@ func (c *Client) decrypt(data string) (string, error) {
 // the "method" url argument and specifies the remote procedure to call, body is an io.Reader
 // to be passed directly into http.Post, and data is to be passed to json.Unmarshal to parse
 // the JSON response.
-func (c *Client) PandoraCall(protocol string, method string, body io.Reader, data interface{}) error {
-	urlArgs := url.Values{
-		"method": {method},
-	}
-
-	if c.partnerID != "" {
-		urlArgs.Add("partner_id", c.partnerID)
-	}
-	if c.userID != "" {
-		urlArgs.Add("user_id", c.userID)
-	}
-	if c.partnerAuthToken != "" && c.userAuthToken == "" {
-		urlArgs.Add("auth_token", c.partnerAuthToken)
-	} else if c.userAuthToken != "" {
-		urlArgs.Add("auth_token", c.userAuthToken)
-	}
-	callUrl := protocol + c.description.BaseURL + "?" + urlArgs.Encode()
-
+func (c *Client) PandoraCall(callUrl string, body io.Reader, data interface{}) error {
 	req, err := http.NewRequest("POST", callUrl, body)
 	if err != nil {
 		return err
@@ -149,6 +132,26 @@ func (c *Client) PandoraCall(protocol string, method string, body io.Reader, dat
 	return nil
 }
 
+func (c *Client) formatURL(protocol, method string) string {
+	urlArgs := url.Values{
+		"method": {method},
+	}
+
+	if c.partnerID != "" {
+		urlArgs.Add("partner_id", c.partnerID)
+	}
+	if c.userID != "" {
+		urlArgs.Add("user_id", c.userID)
+	}
+	if c.partnerAuthToken != "" && c.userAuthToken == "" {
+		urlArgs.Add("auth_token", c.partnerAuthToken)
+	} else if c.userAuthToken != "" {
+		urlArgs.Add("auth_token", c.userAuthToken)
+	}
+
+	return protocol + c.description.BaseURL + "?" + urlArgs.Encode()
+}
+
 // Client.BlowfishCall first encrypts the body before calling PandoraCall.
 // Arguments are identical to PandoraCall.
 func (c *Client) BlowfishCall(protocol string, method string, body io.Reader, data interface{}) error {
@@ -160,7 +163,7 @@ func (c *Client) BlowfishCall(protocol string, method string, body io.Reader, da
 	enc := coder.New(c.encrypter)
 	enc.Write(bodyBytes)
 
-	return c.PandoraCall(protocol, method, enc, data)
+	return c.PandoraCall(c.formatURL(protocol, method), enc, data)
 }
 
 // Most calls require a SyncTime int argument (Unix epoch). We store our current time offset
