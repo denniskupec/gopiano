@@ -1,8 +1,18 @@
 package gopiano
 
-import "testing"
+import (
+	"flag"
+	"testing"
+)
 
 var client *Client
+var p_username, p_password string
+
+func init() {
+	flag.StringVar(&p_username, "username", "", "Pandora login username")
+	flag.StringVar(&p_password, "password", "", "Pandora login password")
+	flag.Parse()
+}
 
 func Test_Setup(t *testing.T) {
 	client, _ = NewClient(AndroidClient)
@@ -42,7 +52,7 @@ func Test_AuthPartnerLogin_1(t *testing.T) {
 }
 
 func Test_AuthUserLogin_1(t *testing.T) {
-	response, err := client.AuthUserLogin("testuser@gmail.com", "securePassword")
+	response, err := client.AuthUserLogin(p_username, p_password)
 	if err != nil {
 		t.Error(err)
 	}
