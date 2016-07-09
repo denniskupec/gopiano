@@ -24,6 +24,7 @@ import (
 
 	"golang.org/x/crypto/blowfish"
 
+	"denniskupec.com/gopiano/coder"
 	"denniskupec.com/gopiano/responses"
 )
 
@@ -68,22 +69,6 @@ func NewClient(d ClientDescription) (*Client, error) {
 		encrypter:   encrypter,
 		decrypter:   decrypter,
 	}, nil
-}
-
-// Blowfish encrypts a string in ECB mode.
-// Many methods of the Pandora API take their JSON data as Blowfish encrypted data.
-// The key for the encryption is provided by the ClientDescription.
-func (c *Client) encrypt(data string) string {
-	chunks := make([]string, 0)
-	for i := 0; i < len(data); i += 8 {
-		var buf [8]byte
-		var crypt [8]byte
-		copy(buf[:], data[i:])
-		c.encrypter.Encrypt(crypt[:], buf[:])
-		encoded := hex.EncodeToString(crypt[:])
-		chunks = append(chunks, encoded)
-	}
-	return strings.Join(chunks, "")
 }
 
 // Blowfish decrypts a string in ECB mode.
@@ -171,8 +156,11 @@ func (c *Client) BlowfishCall(protocol string, method string, body io.Reader, da
 	if err != nil {
 		return err
 	}
-	encrypted := strings.NewReader(c.encrypt(string(bodyBytes)))
-	return c.PandoraCall(protocol, method, encrypted, data)
+
+	enc := coder.New(c.encrypter)
+	enc.Write(bodyBytes)
+
+	return c.PandoraCall(protocol, method, enc, data)
 }
 
 // Most calls require a SyncTime int argument (Unix epoch). We store our current time offset

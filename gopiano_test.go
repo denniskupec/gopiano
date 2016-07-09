@@ -18,17 +18,6 @@ func Test_Setup(t *testing.T) {
 	client, _ = NewClient(AndroidClient)
 }
 
-func Test_Encrypt_1(t *testing.T) {
-	testString := "foobar"
-	expected := "3c739d4e29b5d6c6"
-	encrypted := client.encrypt(testString)
-	if encrypted != expected {
-		t.Error("encrypt failed.")
-	} else {
-		t.Log("encrypt passed")
-	}
-}
-
 func Test_Decrypt_1(t *testing.T) {
 	expected := "foobar"
 	testString := "95b6027f2d427dc0"
