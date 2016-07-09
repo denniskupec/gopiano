@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/cellofellow/gopiano/requests"
-	"github.com/cellofellow/gopiano/responses"
+	"github.com/denniskupec/gopiano/requests"
+	"github.com/denniskupec/gopiano/responses"
 )
 
 // Client.StationAddFeedback adds feedback (thumbs up or down, or star or ban if you prefer) to a song.
@@ -276,9 +276,9 @@ func (c *Client) StationRenameStation(stationToken, stationName string) (*respon
 // Calls API method "station.transformSharedStation"
 func (c *Client) StationTransformSharedStation(stationToken string) (*responses.StationTransformSharedStation, error) {
 	requestData := requests.StationTransformSharedStation{
-		StationToken:   stationToken,
-		UserAuthToken:  c.userAuthToken,
-		SyncTime:       c.GetSyncTime(),
+		StationToken:  stationToken,
+		UserAuthToken: c.userAuthToken,
+		SyncTime:      c.GetSyncTime(),
 	}
 	requestDataEncoded, err := json.Marshal(requestData)
 	if err != nil {

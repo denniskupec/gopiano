@@ -3,8 +3,10 @@ Structs used with json.Unmarshal in processing responses from the Pandora API.
 */
 package responses
 
-import "fmt"
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 var ErrorCodeMap map[int]string = map[int]string{
 	0:    "INTERNAL",

@@ -24,18 +24,18 @@ import (
 
 	"golang.org/x/crypto/blowfish"
 
-	"github.com/cellofellow/gopiano/responses"
+	"github.com/denniskupec/gopiano/responses"
 )
 
 // Describes a particular type of client to emulate.
 type ClientDescription struct {
 	DeviceModel string
-	Username string
-	Password string
-	BaseURL string
-	EncryptKey string
-	DecryptKey string
-	Version string
+	Username    string
+	Password    string
+	BaseURL     string
+	EncryptKey  string
+	DecryptKey  string
+	Version     string
 }
 
 // The data for the Android client.
@@ -46,6 +46,26 @@ var AndroidClient ClientDescription = ClientDescription{
 	BaseURL:     "tuner.pandora.com/services/json/",
 	EncryptKey:  "6#26FRL$ZWD",
 	DecryptKey:  "R=U!LH$O2B#",
+	Version:     "5",
+}
+
+var AirClient ClientDescription = ClientDescription{
+	DeviceModel: "D01",
+	Username:    "pandora one",
+	Password:    "TVCKIBGS9AO9TSYLNNFUML0743LH82D",
+	BaseURL:     "internal-tuner.pandora.com/services/json/",
+	EncryptKey:  "2%3WCL*JU$MP]4",
+	DecryptKey:  "U#IO$RZPAB%VX2",
+	Version:     "5",
+}
+
+var IOSClient ClientDescription = ClientDescription{
+	DeviceModel: "IP01",
+	Username:    "iphone",
+	Password:    "P2E4FC0EAD3*878N92B2CDp34I0B1@388137C",
+	BaseURL:     "tuner.pandora.com/services/json/",
+	EncryptKey:  "721^26xE22776",
+	DecryptKey:  "20zE1E47BE57$51",
 	Version:     "5",
 }
 
@@ -63,7 +83,7 @@ type Client struct {
 }
 
 // Create a new Client with specified ClientDescription
-func NewClient(d ClientDescription) (*Client, error){
+func NewClient(d ClientDescription) (*Client, error) {
 	client := new(http.Client)
 	encrypter, err := blowfish.NewCipher([]byte(d.EncryptKey))
 	if err != nil {
@@ -143,7 +163,7 @@ func (c *Client) PandoraCall(protocol string, method string, body io.Reader, dat
 	if err != nil {
 		return err
 	}
-	req.Header.Add("User-Agent", "gopiano")
+	//req.Header.Add("User-Agent", "gopiano")
 	req.Header.Add("Content-type", "text/plain")
 
 	resp, err := c.http.Do(req)
