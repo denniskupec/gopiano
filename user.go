@@ -1,9 +1,6 @@
 package gopiano
 
 import (
-	"bytes"
-	"encoding/json"
-
 	"denniskupec.com/gopiano/requests"
 	"denniskupec.com/gopiano/responses"
 )
@@ -16,13 +13,9 @@ func (c *Client) UserCanSubscribe() (*responses.UserCanSubscribe, error) {
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
+
 	var resp responses.UserCanSubscribe
-	err = c.BlowfishCall("http://", "user.canSubscribe", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "user.canSubscribe"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -48,13 +41,9 @@ func (c *Client) UserCreateUser(username, password, gender, countryCode string, 
 		EmailOptin:       emailOptin,
 		SyncTime:         c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
+
 	var resp responses.UserCreateUser
-	err = c.BlowfishCall("https://", "user.createUser", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("https://", "user.createUser"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -74,13 +63,9 @@ func (c *Client) UserEmailPassword(username string) error {
 		PartnerAuthToken: c.partnerAuthToken,
 		SyncTime:         c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
+
 	var resp interface{}
-	return c.BlowfishCall("https://", "user.emailPassword", requestDataReader, &resp)
+	return c.BlowfishJSONCall(c.formatURL("https://", "user.emailPassword"), requestData, &resp)
 }
 
 // Client.UserGetBookmarks returns the users bookmarked artists and songs.
@@ -92,13 +77,8 @@ func (c *Client) UserGetBookmarks() (*responses.UserGetBookmarks, error) {
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
 	var resp responses.UserGetBookmarks
-	err = c.BlowfishCall("http://", "user.getBookmarks", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getBookmarks"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -114,14 +94,8 @@ func (c *Client) UserGetStationList(includeStationArtURL bool) (*responses.UserG
 		IncludeStationArtURL: includeStationArtURL,
 	}
 
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
-
 	var resp responses.UserGetStationList
-	err = c.BlowfishCall("http://", "user.getStationList", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getStationList"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -136,14 +110,8 @@ func (c *Client) UserGetStationListChecksum() (*responses.UserGetStationListChec
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
-
 	var resp responses.UserGetStationListChecksum
-	err = c.BlowfishCall("http://", "user.getStationListChecksum", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getStationListChecksum"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -158,13 +126,9 @@ func (c *Client) UserSetQuickMix(stationIDs []string) error {
 		UserAuthToken:      c.userAuthToken,
 		SyncTime:           c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
+
 	var resp interface{}
-	return c.BlowfishCall("https://", "user.setQuickMix", requestDataReader, &resp)
+	return c.BlowfishJSONCall(c.formatURL("https://", "user.setQuickMix"), requestData, &resp)
 }
 
 // Client.UserSleepSong marks a song to be not played again for 1 month.
@@ -175,11 +139,7 @@ func (c *Client) UserSleepSong(trackToken string) error {
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
+
 	var resp interface{}
-	return c.BlowfishCall("https://", "user.sleepSong", requestDataReader, &resp)
+	return c.BlowfishJSONCall(c.formatURL("https://", "user.sleepSong"), requestData, &resp)
 }

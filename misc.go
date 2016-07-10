@@ -1,9 +1,6 @@
 package gopiano
 
 import (
-	"bytes"
-	"encoding/json"
-
 	"denniskupec.com/gopiano/requests"
 	"denniskupec.com/gopiano/responses"
 )
@@ -17,14 +14,9 @@ func (c *Client) ExplainTrack(trackToken string) (*responses.ExplainTrack, error
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
 
 	var resp responses.ExplainTrack
-	err = c.BlowfishCall("http://", "track.explainTrack", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "track.explainTrack"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -39,14 +31,9 @@ func (c *Client) MusicSearch(searchText string) (*responses.MusicSearch, error) 
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
 
 	var resp responses.MusicSearch
-	err = c.BlowfishCall("http://", "music.search", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "music.search"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -62,14 +49,9 @@ func (c *Client) BookmarkAddArtistBookmark(trackToken string) (*responses.Bookma
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
 
 	var resp responses.BookmarkAddArtistBookmark
-	err = c.BlowfishCall("http://", "bookmark.addArtistBookmark", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "bookmark.addArtistBookmark"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -85,14 +67,9 @@ func (c *Client) BookmarkAddSongBookmark(trackToken string) (*responses.Bookmark
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
 
 	var resp responses.BookmarkAddSongBookmark
-	err = c.BlowfishCall("http://", "bookmark.addSongBookmark", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("http://", "bookmark.addSongBookmark"), requestData, &resp)
 	if err != nil {
 		return nil, err
 	}

@@ -157,6 +157,16 @@ func (c *Client) BlowfishCall(protocol string, method string, body io.Reader, da
 	return PandoraCall(c.formatURL(protocol, method), enc, data)
 }
 
+func (c *Client) BlowfishJSONCall(url string, body, data interface{}) error {
+	enc := coder.New(c.encrypter)
+
+	if err := json.NewEncoder(enc).Encode(body); err != nil {
+		return err
+	}
+
+	return PandoraCall(url, enc, data)
+}
+
 // Most calls require a SyncTime int argument (Unix epoch). We store our current time offset
 // but must calculate the SyncTime for each call. This method does that.
 func (c *Client) GetSyncTime() int {

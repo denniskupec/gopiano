@@ -65,13 +65,9 @@ func (c *Client) AuthUserLogin(username, password string) (*responses.AuthUserLo
 		Password:         password,
 		SyncTime:         c.GetSyncTime(),
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
+
 	var resp responses.AuthUserLogin
-	err = c.BlowfishCall("https://", "auth.userLogin", requestDataReader, &resp)
+	err := c.BlowfishJSONCall(c.formatURL("https://", "auth.userLogin"), requestData, &resp)
 	if err != nil {
 		// TODO Handle error
 		return nil, err
