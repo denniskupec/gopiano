@@ -27,13 +27,14 @@ type AuthUserLogin struct {
 	ReturnStationList             bool   `json:"returnStationList,omitempty"`
 }
 
-type userTokenGeneric struct {
+type UserToken struct {
 	SyncTime      int    `json:"syncTime"`
 	UserAuthToken string `json:"userAuthToken"`
 }
-type UserGetBookmarks userTokenGeneric
-type UserGetStationListChecksum userTokenGeneric
-type UserCanSubscribe userTokenGeneric
+
+type UserGetBookmarks UserToken
+type UserGetStationListChecksum UserToken
+type UserCanSubscribe UserToken
 
 type UserCreateUser struct {
 	AccountType      string `json:"accountType"`
@@ -56,111 +57,95 @@ type UserEmailPassword struct {
 }
 
 type UserGetStationList struct {
-	IncludeStationArtURL bool   `json:"includeStationArtUrl,omitempty"`
-	SyncTime             int    `json:"syncTime"`
-	UserAuthToken        string `json:"userAuthToken"`
+	IncludeStationArtURL bool `json:"includeStationArtUrl,omitempty"`
+	UserToken
 }
 
 type UserSetQuickMix struct {
 	QuickMixStationIDs []string `json:"quickMixStationIds"`
-	SyncTime           int      `json:"syncTime"`
-	UserAuthToken      string   `json:"userAuthToken"`
+	UserToken
 }
 
 type trackAction struct {
-	TrackToken    string `json:"trackToken"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	TrackToken string `json:"trackToken"`
+	UserToken
 }
 type UserSleepSong trackAction
 type BookmarkAddArtistBookmark trackAction
 type BookmarkAddSongBookmark trackAction
 
 type MusicSearch struct {
-	SearchText    string `json:"searchText"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	SearchText string `json:"searchText"`
+	UserToken
 }
 
 type StationCreateStation struct {
-	MusicToken    string `json:"musicToken,omitempty"`
-	TrackToken    string `json:"trackToken,omitempty"`
-	MusicType     string `json:"musicType,omitempty"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	MusicToken string `json:"musicToken,omitempty"`
+	TrackToken string `json:"trackToken,omitempty"`
+	MusicType  string `json:"musicType,omitempty"`
+	UserToken
 }
 
 type StationDeleteStation struct {
-	StationToken  string `json:"stationToken"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	StationToken string `json:"stationToken"`
+	UserToken
 }
 
 type StationAddFeedback struct {
-	TrackToken    string `json:"trackToken"`
-	IsPositive    bool   `json:"isPositive"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	TrackToken string `json:"trackToken"`
+	IsPositive bool   `json:"isPositive"`
+	UserToken
 }
 
 type StationDeleteFeedback struct {
-	FeedbackID    string `json:"feedbackId"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	FeedbackID string `json:"feedbackId"`
+	UserToken
 }
 
 type StationAddMusic struct {
-	MusicToken    string `json:"musicToken"`
-	StationToken  string `json:"stationToken"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	MusicToken   string `json:"musicToken"`
+	StationToken string `json:"stationToken"`
+	UserToken
 }
 
 type StationDeleteMusic struct {
-	SeedID        string `json:"seedId"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	SeedID string `json:"seedId"`
+	UserToken
 }
 
-type StationGetGenreStations userTokenGeneric
-type StationGetGenreStationsChecksum userTokenGeneric
+type StationGetGenreStations UserToken
+type StationGetGenreStationsChecksum UserToken
 
 type StationGetPlaylist struct {
-	StationToken  string `json:"stationToken"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	StationToken string `json:"stationToken"`
+	UserToken
 }
 
 type StationGetStation struct {
 	StationToken              string `json:"stationToken"`
 	IncludeExtendedAttributes bool   `json:"includeExtendedAttributes,omitempty"`
-	SyncTime                  int    `json:"syncTime"`
-	UserAuthToken             string `json:"userAuthToken"`
+	UserToken
 }
 
 type StationShareStation struct {
-	StationID     string   `json:"stationId"`
-	StationToken  string   `json:"stationToken"`
-	Emails        []string `json:"emails"`
-	SyncTime      int      `json:"syncTime"`
-	UserAuthToken string   `json:"userAuthToken"`
+	StationID    string   `json:"stationId"`
+	StationToken string   `json:"stationToken"`
+	Emails       []string `json:"emails"`
+	UserToken
 }
 
 type StationRenameStation struct {
-	StationToken  string `json:"stationToken"`
-	StationName   string `json:"stationName"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	StationToken string `json:"stationToken"`
+	StationName  string `json:"stationName"`
+	UserToken
 }
 
 type StationTransformSharedStation struct {
-	StationToken  string `json:"stationToken"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	StationToken string `json:"stationToken"`
+	UserToken
 }
 
 type ExplainTrack struct {
-	TrackToken    string `json:"trackToken"`
-	SyncTime      int    `json:"syncTime"`
-	UserAuthToken string `json:"userAuthToken"`
+	TrackToken string `json:"trackToken"`
+	UserToken
 }

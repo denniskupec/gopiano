@@ -25,6 +25,7 @@ import (
 	"golang.org/x/crypto/blowfish"
 
 	"denniskupec.com/gopiano/coder"
+	"denniskupec.com/gopiano/request"
 	"denniskupec.com/gopiano/response"
 )
 
@@ -162,4 +163,11 @@ func (c *Client) BlowfishJSONCall(url string, body, data interface{}) error {
 // but must calculate the SyncTime for each call. This method does that.
 func (c *Client) GetSyncTime() int {
 	return int(time.Now().Add(c.timeOffset).Unix())
+}
+
+func (c *Client) Token() request.UserToken {
+	return request.UserToken{
+		UserAuthToken: c.userAuthToken,
+		SyncTime:      c.GetSyncTime(),
+	}
 }

@@ -10,9 +10,8 @@ import (
 // Calls API method "track.explainTrack"
 func (c *Client) ExplainTrack(trackToken string) (*response.ExplainTrack, error) {
 	requestData := request.ExplainTrack{
-		TrackToken:    trackToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		TrackToken: trackToken,
+		UserToken:  c.Token(),
 	}
 
 	var resp response.ExplainTrack
@@ -27,9 +26,8 @@ func (c *Client) ExplainTrack(trackToken string) (*response.ExplainTrack, error)
 // Calls API method "music.search"
 func (c *Client) MusicSearch(searchText string) (*response.MusicSearch, error) {
 	requestData := request.MusicSearch{
-		SearchText:    searchText,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		SearchText: searchText,
+		UserToken:  c.Token(),
 	}
 
 	var resp response.MusicSearch
@@ -45,9 +43,8 @@ func (c *Client) MusicSearch(searchText string) (*response.MusicSearch, error) {
 // Calls API method "bookmark.addArtistBookmark"
 func (c *Client) BookmarkAddArtistBookmark(trackToken string) (*response.BookmarkAddArtistBookmark, error) {
 	requestData := request.BookmarkAddArtistBookmark{
-		TrackToken:    trackToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		TrackToken: trackToken,
+		UserToken:  c.Token(),
 	}
 
 	var resp response.BookmarkAddArtistBookmark
@@ -63,9 +60,8 @@ func (c *Client) BookmarkAddArtistBookmark(trackToken string) (*response.Bookmar
 // Calls API method "bookmark.addSongBookmark"
 func (c *Client) BookmarkAddSongBookmark(trackToken string) (*response.BookmarkAddSongBookmark, error) {
 	requestData := request.BookmarkAddSongBookmark{
-		TrackToken:    trackToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		TrackToken: trackToken,
+		UserToken:  c.Token(),
 	}
 
 	var resp response.BookmarkAddSongBookmark

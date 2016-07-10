@@ -11,10 +11,9 @@ import (
 // Calls API method "station.addFeedback"
 func (c *Client) StationAddFeedback(trackToken string, isPositive bool) (*response.StationAddFeedback, error) {
 	requestData := request.StationAddFeedback{
-		TrackToken:    trackToken,
-		IsPositive:    isPositive,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		TrackToken: trackToken,
+		IsPositive: isPositive,
+		UserToken:  c.Token(),
 	}
 
 	var resp response.StationAddFeedback
@@ -31,10 +30,9 @@ func (c *Client) StationAddFeedback(trackToken string, isPositive bool) (*respon
 // Calls API method "station.addMusic"
 func (c *Client) StationAddMusic(musicToken, stationToken string) (*response.StationAddMusic, error) {
 	requestData := request.StationAddMusic{
-		MusicToken:    musicToken,
-		StationToken:  stationToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		MusicToken:   musicToken,
+		StationToken: stationToken,
+		UserToken:    c.Token(),
 	}
 
 	var resp response.StationAddMusic
@@ -51,10 +49,9 @@ func (c *Client) StationAddMusic(musicToken, stationToken string) (*response.Sta
 // Calls API method "station.createStation"
 func (c *Client) StationCreateStationTrack(trackToken, musicType string) (*response.StationCreateStation, error) {
 	requestData := request.StationCreateStation{
-		TrackToken:    trackToken,
-		MusicType:     musicType,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		TrackToken: trackToken,
+		MusicType:  musicType,
+		UserToken:  c.Token(),
 	}
 
 	var resp response.StationCreateStation
@@ -70,9 +67,8 @@ func (c *Client) StationCreateStationTrack(trackToken, musicType string) (*respo
 // Calls API method "station.createStation"
 func (c *Client) StationCreateStationMusic(musicToken string) (*response.StationCreateStation, error) {
 	requestData := request.StationCreateStation{
-		MusicToken:    musicToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		MusicToken: musicToken,
+		UserToken:  c.Token(),
 	}
 
 	var resp response.StationCreateStation
@@ -87,9 +83,8 @@ func (c *Client) StationCreateStationMusic(musicToken string) (*response.Station
 // Calls API method "station.deleteFeedback"
 func (c *Client) StationDeleteFeedback(feedbackID string) error {
 	requestData := request.StationDeleteFeedback{
-		FeedbackID:    feedbackID,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		FeedbackID: feedbackID,
+		UserToken:  c.Token(),
 	}
 
 	var resp interface{}
@@ -100,9 +95,8 @@ func (c *Client) StationDeleteFeedback(feedbackID string) error {
 // Calls API method "station.deleteMusic"
 func (c *Client) StationDeleteMusic(seedID string) error {
 	requestData := request.StationDeleteMusic{
-		SeedID:        seedID,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		SeedID:    seedID,
+		UserToken: c.Token(),
 	}
 
 	var resp interface{}
@@ -113,9 +107,8 @@ func (c *Client) StationDeleteMusic(seedID string) error {
 // Calls API method "station.deleteStation"
 func (c *Client) StationDeleteStation(stationToken string) error {
 	requestData := request.StationDeleteStation{
-		StationToken:  stationToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		StationToken: stationToken,
+		UserToken:    c.Token(),
 	}
 
 	var resp interface{}
@@ -144,9 +137,8 @@ func (c *Client) StationGetGenreStations() (*response.StationGetGenreStations, e
 // Calls API method "station.getPlaylist"
 func (c *Client) StationGetPlaylist(stationToken string) (*response.StationGetPlaylist, error) {
 	requestData := request.StationGetPlaylist{
-		StationToken:  stationToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		StationToken: stationToken,
+		UserToken:    c.Token(),
 	}
 
 	var resp response.StationGetPlaylist
@@ -165,8 +157,7 @@ func (c *Client) StationGetStation(stationToken string, includeExtendedAttribute
 	requestData := request.StationGetStation{
 		StationToken:              stationToken,
 		IncludeExtendedAttributes: includeExtendedAttributes,
-		UserAuthToken:             c.userAuthToken,
-		SyncTime:                  c.GetSyncTime(),
+		UserToken:                 c.Token(),
 	}
 
 	var resp response.StationGetStation
@@ -183,11 +174,10 @@ func (c *Client) StationGetStation(stationToken string, includeExtendedAttribute
 // Calls API method "station.shareStation"
 func (c *Client) StationShareStation(stationID, stationToken string, emails []string) error {
 	requestData := request.StationShareStation{
-		StationToken:  stationToken,
-		StationID:     stationID,
-		Emails:        emails,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		StationToken: stationToken,
+		StationID:    stationID,
+		Emails:       emails,
+		UserToken:    c.Token(),
 	}
 
 	var resp interface{}
@@ -198,10 +188,9 @@ func (c *Client) StationShareStation(stationID, stationToken string, emails []st
 // Calls API method "station.renameStation"
 func (c *Client) StationRenameStation(stationToken, stationName string) (*response.StationRenameStation, error) {
 	requestData := request.StationRenameStation{
-		StationToken:  stationToken,
-		StationName:   stationName,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		StationToken: stationToken,
+		StationName:  stationName,
+		UserToken:    c.Token(),
 	}
 
 	var resp response.StationRenameStation
@@ -216,9 +205,8 @@ func (c *Client) StationRenameStation(stationToken, stationName string) (*respon
 // Calls API method "station.transformSharedStation"
 func (c *Client) StationTransformSharedStation(stationToken string) (*response.StationTransformSharedStation, error) {
 	requestData := request.StationTransformSharedStation{
-		StationToken:  stationToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		StationToken: stationToken,
+		UserToken:    c.Token(),
 	}
 
 	var resp response.StationTransformSharedStation

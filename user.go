@@ -89,9 +89,8 @@ func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
 // Call API method "user.getStationList"
 func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGetStationList, error) {
 	requestData := request.UserGetStationList{
-		UserAuthToken:        c.userAuthToken,
-		SyncTime:             c.GetSyncTime(),
 		IncludeStationArtURL: includeStationArtURL,
+		UserToken:            c.Token(),
 	}
 
 	var resp response.UserGetStationList
@@ -123,8 +122,7 @@ func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListCheck
 func (c *Client) UserSetQuickMix(stationIDs []string) error {
 	requestData := request.UserSetQuickMix{
 		QuickMixStationIDs: stationIDs,
-		UserAuthToken:      c.userAuthToken,
-		SyncTime:           c.GetSyncTime(),
+		UserToken:          c.Token(),
 	}
 
 	var resp interface{}
@@ -135,9 +133,8 @@ func (c *Client) UserSetQuickMix(stationIDs []string) error {
 // Calls API method "user.sleepSong"
 func (c *Client) UserSleepSong(trackToken string) error {
 	requestData := request.UserSleepSong{
-		TrackToken:    trackToken,
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+		TrackToken: trackToken,
+		UserToken:  c.Token(),
 	}
 
 	var resp interface{}
