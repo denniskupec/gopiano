@@ -1,20 +1,20 @@
 package gopiano
 
 import (
-	"denniskupec.com/gopiano/requests"
-	"denniskupec.com/gopiano/responses"
+	"denniskupec.com/gopiano/request"
+	"denniskupec.com/gopiano/response"
 )
 
 // Client.UserCanSubscribe returns whehter a user is subscribed or can subscribe
 // to the premium Pandora One service.
 // Calls API method "user.canSubscribe"
-func (c *Client) UserCanSubscribe() (*responses.UserCanSubscribe, error) {
-	requestData := requests.UserCanSubscribe{
+func (c *Client) UserCanSubscribe() (*response.UserCanSubscribe, error) {
+	requestData := request.UserCanSubscribe{
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.UserCanSubscribe
+	var resp response.UserCanSubscribe
 	err := c.BlowfishJSONCall(c.formatURL("http://", "user.canSubscribe"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -27,8 +27,8 @@ func (c *Client) UserCanSubscribe() (*responses.UserCanSubscribe, error) {
 // Argument username must be in the form of an email address. gender must be either "male" or "female".
 // countryCode must be "US".
 // Calls API method "user.createUser"
-func (c *Client) UserCreateUser(username, password, gender, countryCode string, zipCode, birthYear int, emailOptin bool) (*responses.UserCreateUser, error) {
-	requestData := requests.UserCreateUser{
+func (c *Client) UserCreateUser(username, password, gender, countryCode string, zipCode, birthYear int, emailOptin bool) (*response.UserCreateUser, error) {
+	requestData := request.UserCreateUser{
 		PartnerAuthToken: c.partnerAuthToken,
 		AccountType:      "registered",
 		RegisteredType:   "user",
@@ -42,7 +42,7 @@ func (c *Client) UserCreateUser(username, password, gender, countryCode string, 
 		SyncTime:         c.GetSyncTime(),
 	}
 
-	var resp responses.UserCreateUser
+	var resp response.UserCreateUser
 	err := c.BlowfishJSONCall(c.formatURL("https://", "user.createUser"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (c *Client) UserCreateUser(username, password, gender, countryCode string, 
 // Client.UserEmailPassword resends registration email, maybe?
 // Calls API method "user.emaillPassword"
 func (c *Client) UserEmailPassword(username string) error {
-	requestData := requests.UserEmailPassword{
+	requestData := request.UserEmailPassword{
 		Username:         username,
 		PartnerAuthToken: c.partnerAuthToken,
 		SyncTime:         c.GetSyncTime(),
@@ -71,13 +71,13 @@ func (c *Client) UserEmailPassword(username string) error {
 // Client.UserGetBookmarks returns the users bookmarked artists and songs.
 // Also see BookmarkAddArtistBookmark and BookmarkAddSongBookmark.
 // Calls API method "user.getBookmarks"
-func (c *Client) UserGetBookmarks() (*responses.UserGetBookmarks, error) {
-	requestData := requests.UserGetBookmarks{
+func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
+	requestData := request.UserGetBookmarks{
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.UserGetBookmarks
+	var resp response.UserGetBookmarks
 	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getBookmarks"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -87,14 +87,14 @@ func (c *Client) UserGetBookmarks() (*responses.UserGetBookmarks, error) {
 
 // Client.UserGetStationList gets the list of a users stations.
 // Call API method "user.getStationList"
-func (c *Client) UserGetStationList(includeStationArtURL bool) (*responses.UserGetStationList, error) {
-	requestData := requests.UserGetStationList{
+func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGetStationList, error) {
+	requestData := request.UserGetStationList{
 		UserAuthToken:        c.userAuthToken,
 		SyncTime:             c.GetSyncTime(),
 		IncludeStationArtURL: includeStationArtURL,
 	}
 
-	var resp responses.UserGetStationList
+	var resp response.UserGetStationList
 	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getStationList"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -104,13 +104,13 @@ func (c *Client) UserGetStationList(includeStationArtURL bool) (*responses.UserG
 
 // Client.UserGetStationList returns the checksum of the user's station list.
 // Call API method "user.getStationListChecksum"
-func (c *Client) UserGetStationListChecksum() (*responses.UserGetStationListChecksum, error) {
-	requestData := requests.UserGetStationListChecksum{
+func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListChecksum, error) {
+	requestData := request.UserGetStationListChecksum{
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.UserGetStationListChecksum
+	var resp response.UserGetStationListChecksum
 	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getStationListChecksum"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -121,7 +121,7 @@ func (c *Client) UserGetStationListChecksum() (*responses.UserGetStationListChec
 // Client.UserSetQuickMix selects the stations that should be in the special QuickMix station.
 // Call API method "user.setQuickMix"
 func (c *Client) UserSetQuickMix(stationIDs []string) error {
-	requestData := requests.UserSetQuickMix{
+	requestData := request.UserSetQuickMix{
 		QuickMixStationIDs: stationIDs,
 		UserAuthToken:      c.userAuthToken,
 		SyncTime:           c.GetSyncTime(),
@@ -134,7 +134,7 @@ func (c *Client) UserSetQuickMix(stationIDs []string) error {
 // Client.UserSleepSong marks a song to be not played again for 1 month.
 // Calls API method "user.sleepSong"
 func (c *Client) UserSleepSong(trackToken string) error {
-	requestData := requests.UserSleepSong{
+	requestData := request.UserSleepSong{
 		TrackToken:    trackToken,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),

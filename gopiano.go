@@ -17,6 +17,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -25,7 +26,7 @@ import (
 	"golang.org/x/crypto/blowfish"
 
 	"denniskupec.com/gopiano/coder"
-	"denniskupec.com/gopiano/responses"
+	"denniskupec.com/gopiano/response"
 )
 
 // Describes a particular type of client to emulate.
@@ -99,18 +100,21 @@ func PandoraCall(callUrl string, body io.Reader, data interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	var errResp responses.ErrorResponse
+	var errResp response.ErrorResponse
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
+
+	log.Printf("%s\n", responseBody)
+
 	err = json.Unmarshal(responseBody, &errResp)
 	if err != nil {
 		return err
 	}
 
 	if errResp.Stat == "fail" {
-		if message, ok := responses.ErrorCodeMap[errResp.Code]; ok {
+		if message, ok := response.ErrorCodeMap[errResp.Code]; ok {
 			errResp.Message = message
 		}
 		return errResp

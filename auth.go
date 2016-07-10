@@ -6,16 +6,16 @@ import (
 	"strconv"
 	"time"
 
-	"denniskupec.com/gopiano/requests"
-	"denniskupec.com/gopiano/responses"
+	"denniskupec.com/gopiano/request"
+	"denniskupec.com/gopiano/response"
 )
 
 // Client.AuthPartnerLogin establishes a Partner session with provided
 // API username and password and receives a PartnerAuthToken, PartnerID and SyncTime
 // which are stored for later calls.
 // Calls API method "auth.partnerLogin"
-func (c *Client) AuthPartnerLogin() (*responses.AuthPartnerLogin, error) {
-	requestData := requests.AuthPartnerLogin{
+func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
+	requestData := request.AuthPartnerLogin{
 		Username:    c.description.Username,
 		Password:    c.description.Password,
 		Version:     c.description.Version,
@@ -27,7 +27,7 @@ func (c *Client) AuthPartnerLogin() (*responses.AuthPartnerLogin, error) {
 		return nil, err
 	}
 	requestDataReader := bytes.NewReader(requestDataEncoded)
-	var resp responses.AuthPartnerLogin
+	var resp response.AuthPartnerLogin
 	err = PandoraCall(c.formatURL("https://", "auth.partnerLogin"), requestDataReader, &resp)
 	if err != nil {
 		// TODO Handle error
@@ -57,8 +57,8 @@ func (c *Client) AuthPartnerLogin() (*responses.AuthPartnerLogin, error) {
 // You must call AuthPartnerLogin first, and then either this method or UserCreateUser
 // before you proceed.
 // Calls API method "auth.userLogin"
-func (c *Client) AuthUserLogin(username, password string) (*responses.AuthUserLogin, error) {
-	requestData := requests.AuthUserLogin{
+func (c *Client) AuthUserLogin(username, password string) (*response.AuthUserLogin, error) {
+	requestData := request.AuthUserLogin{
 		PartnerAuthToken: c.partnerAuthToken,
 		LoginType:        "user",
 		Username:         username,
@@ -66,7 +66,7 @@ func (c *Client) AuthUserLogin(username, password string) (*responses.AuthUserLo
 		SyncTime:         c.GetSyncTime(),
 	}
 
-	var resp responses.AuthUserLogin
+	var resp response.AuthUserLogin
 	err := c.BlowfishJSONCall(c.formatURL("https://", "auth.userLogin"), requestData, &resp)
 	if err != nil {
 		// TODO Handle error

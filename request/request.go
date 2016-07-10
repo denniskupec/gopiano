@@ -1,7 +1,7 @@
 /*
 Structs for use with json.Marshal when sending requests to the Pandora API.
 */
-package requests
+package request
 
 type AuthPartnerLogin struct {
 	Username    string `json:"username"`
@@ -126,9 +126,9 @@ type StationGetGenreStations userTokenGeneric
 type StationGetGenreStationsChecksum userTokenGeneric
 
 type StationGetPlaylist struct {
-	StationToken       string        `json:"stationToken"`
-	SyncTime           int           `json:"syncTime"`
-	UserAuthToken      string        `json:"userAuthToken"`
+	StationToken  string `json:"stationToken"`
+	SyncTime      int    `json:"syncTime"`
+	UserAuthToken string `json:"userAuthToken"`
 }
 
 type StationGetStation struct {

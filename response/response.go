@@ -1,7 +1,7 @@
 /*
 Structs used with json.Unmarshal in processing responses from the Pandora API.
 */
-package responses
+package response
 
 import (
 	"fmt"

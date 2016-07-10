@@ -1,23 +1,23 @@
 package gopiano
 
 import (
-	"denniskupec.com/gopiano/requests"
-	"denniskupec.com/gopiano/responses"
+	"denniskupec.com/gopiano/request"
+	"denniskupec.com/gopiano/response"
 )
 
 // Client.StationAddFeedback adds feedback (thumbs up or down, or star or ban if you prefer) to a song.
 // Argument trackToken is the token identifying a track. Obtained from Client.StationGetPlaylist
 // Argument isPositive is a bool which if true is a "star" and if false is a "ban".
 // Calls API method "station.addFeedback"
-func (c *Client) StationAddFeedback(trackToken string, isPositive bool) (*responses.StationAddFeedback, error) {
-	requestData := requests.StationAddFeedback{
+func (c *Client) StationAddFeedback(trackToken string, isPositive bool) (*response.StationAddFeedback, error) {
+	requestData := request.StationAddFeedback{
 		TrackToken:    trackToken,
 		IsPositive:    isPositive,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationAddFeedback
+	var resp response.StationAddFeedback
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.addFeedback"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -29,15 +29,15 @@ func (c *Client) StationAddFeedback(trackToken string, isPositive bool) (*respon
 // Argument musicToken is obtained from Client.MusicSearch
 // Argument stationToken is obtained from Client.UserGetStationList
 // Calls API method "station.addMusic"
-func (c *Client) StationAddMusic(musicToken, stationToken string) (*responses.StationAddMusic, error) {
-	requestData := requests.StationAddMusic{
+func (c *Client) StationAddMusic(musicToken, stationToken string) (*response.StationAddMusic, error) {
+	requestData := request.StationAddMusic{
 		MusicToken:    musicToken,
 		StationToken:  stationToken,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationAddMusic
+	var resp response.StationAddMusic
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.addMusic"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -49,15 +49,15 @@ func (c *Client) StationAddMusic(musicToken, stationToken string) (*responses.St
 // Argument trackToken is a token of a song or artist obtained from Client.StationGetPlaylist.
 // Argument musicType is either "song" or "artist" specifying the type of track being used.
 // Calls API method "station.createStation"
-func (c *Client) StationCreateStationTrack(trackToken, musicType string) (*responses.StationCreateStation, error) {
-	requestData := requests.StationCreateStation{
+func (c *Client) StationCreateStationTrack(trackToken, musicType string) (*response.StationCreateStation, error) {
+	requestData := request.StationCreateStation{
 		TrackToken:    trackToken,
 		MusicType:     musicType,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationCreateStation
+	var resp response.StationCreateStation
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.createStation"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -68,14 +68,14 @@ func (c *Client) StationCreateStationTrack(trackToken, musicType string) (*respo
 // Client.StationCreateStationMusic creates a new station from a music search result.
 // Argument musicToken is obtained from Client.MusicSearch.
 // Calls API method "station.createStation"
-func (c *Client) StationCreateStationMusic(musicToken string) (*responses.StationCreateStation, error) {
-	requestData := requests.StationCreateStation{
+func (c *Client) StationCreateStationMusic(musicToken string) (*response.StationCreateStation, error) {
+	requestData := request.StationCreateStation{
 		MusicToken:    musicToken,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationCreateStation
+	var resp response.StationCreateStation
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.createStation"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ func (c *Client) StationCreateStationMusic(musicToken string) (*responses.Statio
 // Client.StationDeleteFeedback deletes feedback (thumbs up/down) on a particular tracks feedback ID.
 // Calls API method "station.deleteFeedback"
 func (c *Client) StationDeleteFeedback(feedbackID string) error {
-	requestData := requests.StationDeleteFeedback{
+	requestData := request.StationDeleteFeedback{
 		FeedbackID:    feedbackID,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
@@ -99,7 +99,7 @@ func (c *Client) StationDeleteFeedback(feedbackID string) error {
 // Client.StationDeleteMusic removes seed music identified by a seedID from a station.
 // Calls API method "station.deleteMusic"
 func (c *Client) StationDeleteMusic(seedID string) error {
-	requestData := requests.StationDeleteMusic{
+	requestData := request.StationDeleteMusic{
 		SeedID:        seedID,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
@@ -112,7 +112,7 @@ func (c *Client) StationDeleteMusic(seedID string) error {
 // Client.StationDeleteStation removes a station identified by a stationToken.
 // Calls API method "station.deleteStation"
 func (c *Client) StationDeleteStation(stationToken string) error {
-	requestData := requests.StationDeleteStation{
+	requestData := request.StationDeleteStation{
 		StationToken:  stationToken,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
@@ -124,13 +124,13 @@ func (c *Client) StationDeleteStation(stationToken string) error {
 
 // Client.StationGetGenreStations retrieves a list of predefined "genre stations".
 // Calls API method "station.getGenreStations"
-func (c *Client) StationGetGenreStations() (*responses.StationGetGenreStations, error) {
-	requestData := requests.StationGetGenreStations{
+func (c *Client) StationGetGenreStations() (*response.StationGetGenreStations, error) {
+	requestData := request.StationGetGenreStations{
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationGetGenreStations
+	var resp response.StationGetGenreStations
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.addGetGenreStations"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -142,14 +142,14 @@ func (c *Client) StationGetGenreStations() (*responses.StationGetGenreStations, 
 // Argument stationToken is a obtained from User.GetStationList.
 // Note: an error response with code 0 may mean you've called getPlaylist too much.
 // Calls API method "station.getPlaylist"
-func (c *Client) StationGetPlaylist(stationToken string) (*responses.StationGetPlaylist, error) {
-	requestData := requests.StationGetPlaylist{
+func (c *Client) StationGetPlaylist(stationToken string) (*response.StationGetPlaylist, error) {
+	requestData := request.StationGetPlaylist{
 		StationToken:  stationToken,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationGetPlaylist
+	var resp response.StationGetPlaylist
 	err := c.BlowfishJSONCall(c.formatURL("https://", "station.getPlaylist"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -161,15 +161,15 @@ func (c *Client) StationGetPlaylist(stationToken string) (*responses.StationGetP
 // Argument stationToken is obtained from Client.UserGetStationList
 // Argument includeExtendedAttributes will include music seed and feedback IDs in response.
 // Calls API method "station.getStation"
-func (c *Client) StationGetStation(stationToken string, includeExtendedAttributes bool) (*responses.StationGetStation, error) {
-	requestData := requests.StationGetStation{
+func (c *Client) StationGetStation(stationToken string, includeExtendedAttributes bool) (*response.StationGetStation, error) {
+	requestData := request.StationGetStation{
 		StationToken:              stationToken,
 		IncludeExtendedAttributes: includeExtendedAttributes,
 		UserAuthToken:             c.userAuthToken,
 		SyncTime:                  c.GetSyncTime(),
 	}
 
-	var resp responses.StationGetStation
+	var resp response.StationGetStation
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.getStation"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -182,7 +182,7 @@ func (c *Client) StationGetStation(stationToken string, includeExtendedAttribute
 // Argument emails is a list of email addresses.
 // Calls API method "station.shareStation"
 func (c *Client) StationShareStation(stationID, stationToken string, emails []string) error {
-	requestData := requests.StationShareStation{
+	requestData := request.StationShareStation{
 		StationToken:  stationToken,
 		StationID:     stationID,
 		Emails:        emails,
@@ -196,15 +196,15 @@ func (c *Client) StationShareStation(stationID, stationToken string, emails []st
 
 // Client.StationRenameStation sets a new name for a station.
 // Calls API method "station.renameStation"
-func (c *Client) StationRenameStation(stationToken, stationName string) (*responses.StationRenameStation, error) {
-	requestData := requests.StationRenameStation{
+func (c *Client) StationRenameStation(stationToken, stationName string) (*response.StationRenameStation, error) {
+	requestData := request.StationRenameStation{
 		StationToken:  stationToken,
 		StationName:   stationName,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationRenameStation
+	var resp response.StationRenameStation
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.renameStation"), requestData, &resp)
 	if err != nil {
 		return nil, err
@@ -214,14 +214,14 @@ func (c *Client) StationRenameStation(stationToken, stationName string) (*respon
 
 // Client.StationTransformSharedStation copies a shared station and creates a user-editable station.
 // Calls API method "station.transformSharedStation"
-func (c *Client) StationTransformSharedStation(stationToken string) (*responses.StationTransformSharedStation, error) {
-	requestData := requests.StationTransformSharedStation{
+func (c *Client) StationTransformSharedStation(stationToken string) (*response.StationTransformSharedStation, error) {
+	requestData := request.StationTransformSharedStation{
 		StationToken:  stationToken,
 		UserAuthToken: c.userAuthToken,
 		SyncTime:      c.GetSyncTime(),
 	}
 
-	var resp responses.StationTransformSharedStation
+	var resp response.StationTransformSharedStation
 	err := c.BlowfishJSONCall(c.formatURL("http://", "station.transformSharedStation"), requestData, &resp)
 	if err != nil {
 		return nil, err
