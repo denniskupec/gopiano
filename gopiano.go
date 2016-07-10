@@ -17,7 +17,6 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -100,31 +99,19 @@ func PandoraCall(callUrl string, body io.Reader, data interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	var errResp response.ErrorResponse
-	responseBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+	var wrap response.Wrapper
+	if err := json.NewDecoder(resp.Body).Decode(&wrap); err != nil {
 		return err
 	}
 
-	log.Printf("%s\n", responseBody)
-
-	err = json.Unmarshal(responseBody, &errResp)
-	if err != nil {
-		return err
-	}
-
-	if errResp.Stat == "fail" {
-		if message, ok := response.ErrorCodeMap[errResp.Code]; ok {
-			errResp.Message = message
+	if wrap.Stat == "fail" {
+		if message, ok := response.ErrorCodeMap[wrap.Code]; ok {
+			wrap.Message = message
 		}
-		return errResp
+		return wrap.ErrorResponse
 	}
 
-	err = json.Unmarshal(responseBody, &data)
-	if err != nil {
-		return err
-	}
-	return nil
+	return json.Unmarshal(wrap.Result, &data)
 }
 
 func (c *Client) formatURL(protocol, method string) string {

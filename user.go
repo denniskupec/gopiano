@@ -49,8 +49,8 @@ func (c *Client) UserCreateUser(username, password, gender, countryCode string, 
 	}
 
 	// Set user data onto client for later use.
-	c.userAuthToken = resp.Result.UserAuthToken
-	c.userID = resp.Result.UserID
+	c.userAuthToken = resp.UserAuthToken
+	c.userID = resp.UserID
 
 	return &resp, nil
 }

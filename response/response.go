@@ -4,6 +4,7 @@ Structs used with json.Unmarshal in processing responses from the Pandora API.
 package response
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -89,49 +90,43 @@ func (d DateResponse) GetDate() time.Time {
 }
 
 type AuthPartnerLogin struct {
-	Result struct {
-		SyncTime         string `json:"syncTime"`
-		StationSkipLimit int    `json:"stationSkipLimit"`
-		PartnerAuthToken string `json:"partnerAuthToken"`
-		PartnerID        string `json:"partnerId"`
-		StationSkipUnit  string `json:"stationSkipUnit"`
-		DeviceProperties struct {
-			VideoAdRefreshInterval int `json:"videoAdRefreshInterval"`
-			VideoAdUniqueInterval  int `json:"videoAdUniqueInterval"`
-			AdRefreshInterval      int `json:"adRefreshInterval"`
-			VideoAdStartInterval   int `json:"videoAdStartInterval"`
-		} `json:"deviceProperties"`
-		Urls struct {
-			AutoComplete string `json:"autoComplete"`
-		} `json:"urls"`
-	}
+	SyncTime         string `json:"syncTime"`
+	StationSkipLimit int    `json:"stationSkipLimit"`
+	PartnerAuthToken string `json:"partnerAuthToken"`
+	PartnerID        string `json:"partnerId"`
+	StationSkipUnit  string `json:"stationSkipUnit"`
+	DeviceProperties struct {
+		VideoAdRefreshInterval int `json:"videoAdRefreshInterval"`
+		VideoAdUniqueInterval  int `json:"videoAdUniqueInterval"`
+		AdRefreshInterval      int `json:"adRefreshInterval"`
+		VideoAdStartInterval   int `json:"videoAdStartInterval"`
+	} `json:"deviceProperties"`
+	Urls struct {
+		AutoComplete string `json:"autoComplete"`
+	} `json:"urls"`
 }
 
 type AuthUserLogin struct {
-	Result struct {
-		CanListen                   bool   `json:"canListen"`
-		HasAudioAds                 bool   `json:"hasAudioAds"`
-		IsCapped                    bool   `json:"isCapped,omitempty"`
-		ListeningTimeoutAlertMsgUri string `json:"listeningTimeoutAlertMsgUri"`
-		ListeningTimeoutMinutes     string `json:"listeningTimeoutMinutes"`
-		MaxStationsAllowed          int    `json:"maxStationsAllowed"`
-		MinimumAdRefreshInterval    int    `json:"minimumAdRefreshInterval"`
-		NowPlayingURL               string `json:"nowPlayingUrl"`
-		SplashScreenAdURL           string `json:"splashScreenAdUrl"`
-		StationCreationAdURL        string `json:"stationCreationAdUrl"`
-		UserAuthToken               string `json:"userAuthToken"`
-		UserID                      string `json:"userId"`
-		UserProfileURL              string `json:"userProfileUrl"`
-		Username                    string `json:"username"`
-		VideoAdURL                  string `json:"videoAdUrl"`
-	} `json:"result"`
+	CanListen                   bool   `json:"canListen"`
+	HasAudioAds                 bool   `json:"hasAudioAds"`
+	IsCapped                    bool   `json:"isCapped,omitempty"`
+	ListeningTimeoutAlertMsgUri string `json:"listeningTimeoutAlertMsgUri"`
+	ListeningTimeoutMinutes     string `json:"listeningTimeoutMinutes"`
+	MaxStationsAllowed          int    `json:"maxStationsAllowed"`
+	MinimumAdRefreshInterval    int    `json:"minimumAdRefreshInterval"`
+	NowPlayingURL               string `json:"nowPlayingUrl"`
+	SplashScreenAdURL           string `json:"splashScreenAdUrl"`
+	StationCreationAdURL        string `json:"stationCreationAdUrl"`
+	UserAuthToken               string `json:"userAuthToken"`
+	UserID                      string `json:"userId"`
+	UserProfileURL              string `json:"userProfileUrl"`
+	Username                    string `json:"username"`
+	VideoAdURL                  string `json:"videoAdUrl"`
 }
 
 type UserCanSubscribe struct {
-	Result struct {
-		CanSubscribe bool `json:"canSubscribe"`
-		IsSubscriber bool `json:"isSubscriber"`
-	} `json:"result"`
+	CanSubscribe bool `json:"canSubscribe"`
+	IsSubscriber bool `json:"isSubscriber"`
 }
 
 type UserCreateUser AuthUserLogin
@@ -145,7 +140,7 @@ type ArtistBookmark struct {
 }
 
 type BookmarkAddArtistBookmark struct {
-	Result ArtistBookmark `json:"result"`
+	ArtistBookmark
 }
 
 type SongBookmark struct {
@@ -161,7 +156,7 @@ type SongBookmark struct {
 }
 
 type BookmarkAddSongBookmark struct {
-	Result SongBookmark `json:"result"`
+	SongBookmark
 }
 
 type Station struct {
@@ -216,42 +211,34 @@ func (s StationList) Less(i, j int) bool {
 }
 
 type UserGetBookmarks struct {
-	Result struct {
-		Artists []ArtistBookmark `json:"artists"`
-		Songs   []SongBookmark   `json:"songs"`
-	} `json:"result"`
+	Artists []ArtistBookmark `json:"artists"`
+	Songs   []SongBookmark   `json:"songs"`
 }
 
 type UserGetStationList struct {
-	Result struct {
-		Stations StationList `json:"stations"`
-		Checksum string      `json:"checksum"`
-	} `json:"result"`
+	Stations StationList `json:"stations"`
+	Checksum string      `json:"checksum"`
 }
 
 type UserGetStationListChecksum struct {
-	Result struct {
-		Checksum string `json:"checksum"`
-	} `json:"result"`
+	Checksum string `json:"checksum"`
 }
 
 type MusicSearch struct {
-	Result struct {
-		NearMatchesAvailable bool   `json:"nearMatchesAvailable"`
-		Explanation          string `json:"explanation"`
-		Songs                []struct {
-			ArtistName string `json:"artistName"`
-			MusicToken string `json:"musicToken"`
-			SongName   string `json:"songName"`
-			Score      int    `json:"score"`
-		} `json:"songs"`
-		Artists []struct {
-			ArtistName  string `json:"artistName"`
-			MusicToken  string `json:"musicToken"`
-			LikelyMatch bool   `json:"likelyMatch"`
-			Score       int    `json:"score"`
-		} `json:"artists"`
-	} `json:"result"`
+	NearMatchesAvailable bool   `json:"nearMatchesAvailable"`
+	Explanation          string `json:"explanation"`
+	Songs                []struct {
+		ArtistName string `json:"artistName"`
+		MusicToken string `json:"musicToken"`
+		SongName   string `json:"songName"`
+		Score      int    `json:"score"`
+	} `json:"songs"`
+	Artists []struct {
+		ArtistName  string `json:"artistName"`
+		MusicToken  string `json:"musicToken"`
+		LikelyMatch bool   `json:"likelyMatch"`
+		Score       int    `json:"score"`
+	} `json:"artists"`
 }
 
 type FeedbackResponse struct {
@@ -267,11 +254,9 @@ type StationAddFeedback struct {
 }
 
 type StationAddMusic struct {
-	Result struct {
-		ArtistName  string       `json:"artistName"`
-		DateCreated DateResponse `json:"dateCreated"`
-		SeedID      string       `json:"seedId"`
-	} `json:"result"`
+	ArtistName  string       `json:"artistName"`
+	DateCreated DateResponse `json:"dateCreated"`
+	SeedID      string       `json:"seedId"`
 }
 
 type StationResponse struct {
@@ -283,64 +268,61 @@ type StationRenameStation StationResponse
 type StationTransformSharedStation StationResponse
 
 type StationGetGenreStations struct {
-	Result struct {
-		Categories []struct {
-			CategoryName string `json:"categoryName"`
-			Stations     []struct {
-				StationToken string `json:"stationToken"`
-				StationName  string `json:"stationName"`
-				StationID    string `json:"stationId"`
-			}
-		} `json:"categories"`
-	} `json:"result"`
+	Categories []struct {
+		CategoryName string `json:"categoryName"`
+		Stations     []struct {
+			StationToken string `json:"stationToken"`
+			StationName  string `json:"stationName"`
+			StationID    string `json:"stationId"`
+		}
+	} `json:"categories"`
 }
 
 type StationGetGenreStationsChecksum struct {
-	Result struct {
-		Checksum string `json:"checksum"`
-	} `json:"result"`
+	Checksum string `json:"checksum"`
 }
 
 type StationGetPlaylist struct {
-	Result struct {
-		Items []struct {
-			TrackToken      string `json:"trackToken"`
-			ArtistName      string `json:"artistName"`
-			AlbumName       string `json:"albumName"`
-			AmazonAlbumURL  string `json:"amazonAlbumUrl"`
-			SongExplorerURL string `json:"songExplorerUrl"`
-			AlbumArtURL     string `json:"albumArtUrl"`
-			ArtistDetailURL string `json:"artistDetailUrl"`
-			AudioURLMap     map[string]struct {
-				Bitrate  string `json:"bitrate"`
-				Encoding string `json:"encoding"`
-				AudioURL string `json:"audioUrl"`
-				Protocol string `json:"protocol"`
-			} `json:"audioUrlMap"`
-			ITunesSongURL          string `json:"itunesSongUrl"`
-			AmazonAlbumAsin        string `json:"amazonAlbumAsin"`
-			AmazonAlbumDigitalAsin string `json:"amazonAlbumDigitalAsin"`
-			ArtistExplorerURL      string `json:"artistExplorerUrl"`
-			SongName               string `json:"songName"`
-			AlbumDetailURL         string `json:"albumDetailUrl"`
-			SongDetailURL          string `json:"songDetailUrl"`
-			StationID              string `json:"stationId"`
-			SongRating             int    `json:"songRating"`
-			TrackGain              string `json:"trackGain"`
-			AlbumExplorerURL       string `json:"albumExplorerUrl"`
-			AllowFeedback          bool   `json:"allowFeedback"`
-			AmazonSongDigitalAsin  string `json:"amazonSongDigitalAsin"`
-			NowPlayingStationAdURL string `json:"nowPlayingStationAdUrl"`
-			AdToken                string `json:"adToken"`
-		} `json:"items"`
-	} `json:"result"`
+	Items []struct {
+		TrackToken      string `json:"trackToken"`
+		ArtistName      string `json:"artistName"`
+		AlbumName       string `json:"albumName"`
+		AmazonAlbumURL  string `json:"amazonAlbumUrl"`
+		SongExplorerURL string `json:"songExplorerUrl"`
+		AlbumArtURL     string `json:"albumArtUrl"`
+		ArtistDetailURL string `json:"artistDetailUrl"`
+		AudioURLMap     map[string]struct {
+			Bitrate  string `json:"bitrate"`
+			Encoding string `json:"encoding"`
+			AudioURL string `json:"audioUrl"`
+			Protocol string `json:"protocol"`
+		} `json:"audioUrlMap"`
+		ITunesSongURL          string `json:"itunesSongUrl"`
+		AmazonAlbumAsin        string `json:"amazonAlbumAsin"`
+		AmazonAlbumDigitalAsin string `json:"amazonAlbumDigitalAsin"`
+		ArtistExplorerURL      string `json:"artistExplorerUrl"`
+		SongName               string `json:"songName"`
+		AlbumDetailURL         string `json:"albumDetailUrl"`
+		SongDetailURL          string `json:"songDetailUrl"`
+		StationID              string `json:"stationId"`
+		SongRating             int    `json:"songRating"`
+		TrackGain              string `json:"trackGain"`
+		AlbumExplorerURL       string `json:"albumExplorerUrl"`
+		AllowFeedback          bool   `json:"allowFeedback"`
+		AmazonSongDigitalAsin  string `json:"amazonSongDigitalAsin"`
+		NowPlayingStationAdURL string `json:"nowPlayingStationAdUrl"`
+		AdToken                string `json:"adToken"`
+	} `json:"items"`
 }
 
 type ExplainTrack struct {
-	Result struct {
-		Explanations []struct {
-			FocustTraitName string `json:"focusTraitName"`
-			FocusTraitID    string `json:"focustTraitId"`
-		} `json:"explanations"`
-	} `json:"result"`
+	Explanations []struct {
+		FocustTraitName string `json:"focusTraitName"`
+		FocusTraitID    string `json:"focustTraitId"`
+	} `json:"explanations"`
+}
+
+type Wrapper struct {
+	ErrorResponse
+	Result json.RawMessage `json:"result"`
 }

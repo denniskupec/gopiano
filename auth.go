@@ -34,20 +34,20 @@ func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 		return nil, err
 	}
 
-	syncTime, err := c.decrypt(resp.Result.SyncTime)
+	syncTime, err := c.decrypt(resp.SyncTime)
 	if err != nil {
 		return nil, err
 	}
-	resp.Result.SyncTime = string(syncTime[4:14])
-	i, err := strconv.ParseInt(resp.Result.SyncTime, 10, 32)
+	resp.SyncTime = string(syncTime[4:14])
+	i, err := strconv.ParseInt(resp.SyncTime, 10, 32)
 	if err != nil {
 		return nil, err
 	}
 
 	// Set partner data onto client for later use.
 	c.timeOffset = time.Unix(i, 0).Sub(time.Now())
-	c.partnerAuthToken = resp.Result.PartnerAuthToken
-	c.partnerID = resp.Result.PartnerID
+	c.partnerAuthToken = resp.PartnerAuthToken
+	c.partnerID = resp.PartnerID
 
 	return &resp, nil
 }
@@ -74,8 +74,8 @@ func (c *Client) AuthUserLogin(username, password string) (*response.AuthUserLog
 	}
 
 	// Set user data onto client for later use.
-	c.userAuthToken = resp.Result.UserAuthToken
-	c.userID = resp.Result.UserID
+	c.userAuthToken = resp.UserAuthToken
+	c.userID = resp.UserID
 
 	return &resp, nil
 }
