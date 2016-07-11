@@ -104,14 +104,15 @@ func PandoraCall(callUrl string, body io.Reader) (json.RawMessage, error) {
 		return nil, err
 	}
 
-	if wrap.Stat == "fail" {
-		if message, ok := response.ErrorCodeMap[wrap.Code]; ok {
-			wrap.Message = message
-		}
-		return nil, wrap.ErrorResponse
+	if wrap.Stat == "ok" {
+		return wrap.Result, nil
 	}
 
-	return wrap.Result, nil
+	if message, ok := response.ErrorCodeMap[wrap.Code]; ok {
+		wrap.ErrorResponse.Message = message
+	}
+
+	return nil, wrap.ErrorResponse
 }
 
 func (c *Client) formatURL(req request.Type) string {
