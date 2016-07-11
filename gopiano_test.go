@@ -12,9 +12,7 @@ func init() {
 	flag.StringVar(&pUsername, "username", "", "Pandora login username")
 	flag.StringVar(&pPassword, "password", "", "Pandora login password")
 	flag.Parse()
-}
 
-func Test_Setup(t *testing.T) {
 	client, _ = NewClient(AndroidClient)
 }
 
