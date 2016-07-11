@@ -17,11 +17,7 @@ func (c *Client) StationAddFeedback(trackToken string, isPositive bool) (*respon
 	}
 
 	var resp response.StationAddFeedback
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationAddMusic adds an additional music seed to an existing station.
@@ -36,11 +32,7 @@ func (c *Client) StationAddMusic(musicToken, stationToken string) (*response.Sta
 	}
 
 	var resp response.StationAddMusic
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationCreateStationTrack creates a new station from a specified track.
@@ -55,11 +47,7 @@ func (c *Client) StationCreateStationTrack(trackToken, musicType string) (*respo
 	}
 
 	var resp response.StationCreateStation
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationCreateStationMusic creates a new station from a music search result.
@@ -72,11 +60,7 @@ func (c *Client) StationCreateStationMusic(musicToken string) (*response.Station
 	}
 
 	var resp response.StationCreateStation
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationDeleteFeedback deletes feedback (thumbs up/down) on a particular tracks feedback ID.
@@ -121,11 +105,7 @@ func (c *Client) StationGetGenreStations() (*response.StationGetGenreStations, e
 	requestData := request.GetGenreStations(c.Token())
 
 	var resp response.StationGetGenreStations
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationGetPlaylist retrieves a playlist for a specified token.
@@ -139,11 +119,7 @@ func (c *Client) StationGetPlaylist(stationToken string) (*response.StationGetPl
 	}
 
 	var resp response.StationGetPlaylist
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationGetStation retrieves station details.
@@ -158,11 +134,7 @@ func (c *Client) StationGetStation(stationToken string, includeExtendedAttribute
 	}
 
 	var resp response.StationGetStation
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationShareStation shares a station with provided email addresses.
@@ -191,11 +163,7 @@ func (c *Client) StationRenameStation(stationToken, stationName string) (*respon
 	}
 
 	var resp response.StationRenameStation
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.StationTransformSharedStation copies a shared station and creates a user-editable station.
@@ -207,9 +175,5 @@ func (c *Client) StationTransformSharedStation(stationToken string) (*response.S
 	}
 
 	var resp response.StationTransformSharedStation
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }

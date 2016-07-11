@@ -14,11 +14,7 @@ func (c *Client) UserCanSubscribe() (*response.UserCanSubscribe, error) {
 	}
 
 	var resp response.UserCanSubscribe
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.UserCreateUser creates a new Pandora user.
@@ -72,11 +68,7 @@ func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
 	requestData := request.GetBookmarks(c.Token())
 
 	var resp response.UserGetBookmarks
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.UserGetStationList gets the list of a users stations.
@@ -88,11 +80,7 @@ func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGe
 	}
 
 	var resp response.UserGetStationList
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.UserGetStationList returns the checksum of the user's station list.
@@ -101,11 +89,7 @@ func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListCheck
 	requestData := request.GetStationListChecksum(c.Token())
 
 	var resp response.UserGetStationListChecksum
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.UserSetQuickMix selects the stations that should be in the special QuickMix station.

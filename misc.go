@@ -15,11 +15,7 @@ func (c *Client) ExplainTrack(trackToken string) (*response.ExplainTrack, error)
 	}
 
 	var resp response.ExplainTrack
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.MusicSearch searches for music, which can be used to create a new or add seeds to a station.
@@ -31,11 +27,7 @@ func (c *Client) MusicSearch(searchText string) (*response.MusicSearch, error) {
 	}
 
 	var resp response.MusicSearch
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.AddArtistBookmark bookmarks an artist.
@@ -48,11 +40,7 @@ func (c *Client) BookmarkAddArtistBookmark(trackToken string) (*response.Bookmar
 	}
 
 	var resp response.BookmarkAddArtistBookmark
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
 
 // Client.BookmarkAddSongBookmark bookmarks a song.
@@ -65,9 +53,5 @@ func (c *Client) BookmarkAddSongBookmark(trackToken string) (*response.BookmarkA
 	}
 
 	var resp response.BookmarkAddSongBookmark
-	if err := c.Call(requestData, &resp); err != nil {
-		return nil, err
-	}
-
-	return &resp, nil
+	return &resp, c.Call(requestData, &resp)
 }
