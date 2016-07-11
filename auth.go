@@ -39,7 +39,7 @@ func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 		}
 	}
 
-	syncTime, err := c.decrypt(resp.SyncTime)
+	syncTime, err := c.decrypt([]byte(resp.SyncTime))
 	if err != nil {
 		return nil, err
 	}

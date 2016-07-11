@@ -1,6 +1,7 @@
 package gopiano
 
 import (
+	"bytes"
 	"flag"
 	"testing"
 )
@@ -17,13 +18,13 @@ func init() {
 }
 
 func Test_Decrypt_1(t *testing.T) {
-	expected := "foobar"
-	testString := "95b6027f2d427dc0"
+	expected := []byte("foobar")
+	testString := []byte("95b6027f2d427dc0")
 	decrypted, err := client.decrypt(testString)
 	if err != nil {
 		t.Error(err)
 	}
-	if decrypted != expected {
+	if bytes.Compare(decrypted, expected) != 0 {
 		t.Error("decrypt failed.")
 	} else {
 		t.Log("decrypt passed")
