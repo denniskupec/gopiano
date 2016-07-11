@@ -15,7 +15,7 @@ import (
 // which are stored for later calls.
 // Calls API method "auth.partnerLogin"
 func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
-	requestData := request.AuthPartnerLogin{
+	requestData := request.PartnerLogin{
 		Username:    c.description.Username,
 		Password:    c.description.Password,
 		Version:     c.description.Version,
@@ -58,7 +58,7 @@ func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 // before you proceed.
 // Calls API method "auth.userLogin"
 func (c *Client) AuthUserLogin(username, password string) (*response.AuthUserLogin, error) {
-	requestData := request.AuthUserLogin{
+	requestData := request.UserLogin{
 		PartnerAuthToken: c.partnerAuthToken,
 		LoginType:        "user",
 		Username:         username,

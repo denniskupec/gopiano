@@ -9,9 +9,8 @@ import (
 // to the premium Pandora One service.
 // Calls API method "user.canSubscribe"
 func (c *Client) UserCanSubscribe() (*response.UserCanSubscribe, error) {
-	requestData := request.UserCanSubscribe{
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
+	requestData := request.CanSubscribe{
+		UserToken: c.Token(),
 	}
 
 	var resp response.UserCanSubscribe
@@ -28,7 +27,7 @@ func (c *Client) UserCanSubscribe() (*response.UserCanSubscribe, error) {
 // countryCode must be "US".
 // Calls API method "user.createUser"
 func (c *Client) UserCreateUser(username, password, gender, countryCode string, zipCode, birthYear int, emailOptin bool) (*response.UserCreateUser, error) {
-	requestData := request.UserCreateUser{
+	requestData := request.CreateUser{
 		PartnerAuthToken: c.partnerAuthToken,
 		AccountType:      "registered",
 		RegisteredType:   "user",
@@ -58,7 +57,7 @@ func (c *Client) UserCreateUser(username, password, gender, countryCode string, 
 // Client.UserEmailPassword resends registration email, maybe?
 // Calls API method "user.emaillPassword"
 func (c *Client) UserEmailPassword(username string) error {
-	requestData := request.UserEmailPassword{
+	requestData := request.EmailPassword{
 		Username:         username,
 		PartnerAuthToken: c.partnerAuthToken,
 		SyncTime:         c.GetSyncTime(),
@@ -72,10 +71,7 @@ func (c *Client) UserEmailPassword(username string) error {
 // Also see BookmarkAddArtistBookmark and BookmarkAddSongBookmark.
 // Calls API method "user.getBookmarks"
 func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
-	requestData := request.UserGetBookmarks{
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
-	}
+	requestData := request.GetBookmarks(c.Token())
 
 	var resp response.UserGetBookmarks
 	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getBookmarks"), requestData, &resp)
@@ -88,7 +84,7 @@ func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
 // Client.UserGetStationList gets the list of a users stations.
 // Call API method "user.getStationList"
 func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGetStationList, error) {
-	requestData := request.UserGetStationList{
+	requestData := request.GetStationList{
 		IncludeStationArtURL: includeStationArtURL,
 		UserToken:            c.Token(),
 	}
@@ -104,10 +100,7 @@ func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGe
 // Client.UserGetStationList returns the checksum of the user's station list.
 // Call API method "user.getStationListChecksum"
 func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListChecksum, error) {
-	requestData := request.UserGetStationListChecksum{
-		UserAuthToken: c.userAuthToken,
-		SyncTime:      c.GetSyncTime(),
-	}
+	requestData := request.GetStationListChecksum(c.Token())
 
 	var resp response.UserGetStationListChecksum
 	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getStationListChecksum"), requestData, &resp)
@@ -120,7 +113,7 @@ func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListCheck
 // Client.UserSetQuickMix selects the stations that should be in the special QuickMix station.
 // Call API method "user.setQuickMix"
 func (c *Client) UserSetQuickMix(stationIDs []string) error {
-	requestData := request.UserSetQuickMix{
+	requestData := request.SetQuickMix{
 		QuickMixStationIDs: stationIDs,
 		UserToken:          c.Token(),
 	}
@@ -132,7 +125,7 @@ func (c *Client) UserSetQuickMix(stationIDs []string) error {
 // Client.UserSleepSong marks a song to be not played again for 1 month.
 // Calls API method "user.sleepSong"
 func (c *Client) UserSleepSong(trackToken string) error {
-	requestData := request.UserSleepSong{
+	requestData := request.SleepSong{
 		TrackToken: trackToken,
 		UserToken:  c.Token(),
 	}

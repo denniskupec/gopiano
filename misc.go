@@ -42,7 +42,7 @@ func (c *Client) MusicSearch(searchText string) (*response.MusicSearch, error) {
 // Argument trackToken is a token of a specific artist.
 // Calls API method "bookmark.addArtistBookmark"
 func (c *Client) BookmarkAddArtistBookmark(trackToken string) (*response.BookmarkAddArtistBookmark, error) {
-	requestData := request.BookmarkAddArtistBookmark{
+	requestData := request.AddArtistBookmark{
 		TrackToken: trackToken,
 		UserToken:  c.Token(),
 	}
@@ -59,7 +59,7 @@ func (c *Client) BookmarkAddArtistBookmark(trackToken string) (*response.Bookmar
 // Argument trackToken is a token of a specific song.
 // Calls API method "bookmark.addSongBookmark"
 func (c *Client) BookmarkAddSongBookmark(trackToken string) (*response.BookmarkAddSongBookmark, error) {
-	requestData := request.BookmarkAddSongBookmark{
+	requestData := request.AddSongBookmark{
 		TrackToken: trackToken,
 		UserToken:  c.Token(),
 	}
