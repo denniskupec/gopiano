@@ -15,10 +15,10 @@ func (c *Client) ExplainTrack(trackToken string) (*response.ExplainTrack, error)
 	}
 
 	var resp response.ExplainTrack
-	err := c.BlowfishJSONCall(c.formatURL("http://", "track.explainTrack"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
+
 	return &resp, nil
 }
 
@@ -31,10 +31,10 @@ func (c *Client) MusicSearch(searchText string) (*response.MusicSearch, error) {
 	}
 
 	var resp response.MusicSearch
-	err := c.BlowfishJSONCall(c.formatURL("http://", "music.search"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
+
 	return &resp, nil
 }
 
@@ -48,10 +48,10 @@ func (c *Client) BookmarkAddArtistBookmark(trackToken string) (*response.Bookmar
 	}
 
 	var resp response.BookmarkAddArtistBookmark
-	err := c.BlowfishJSONCall(c.formatURL("http://", "bookmark.addArtistBookmark"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
+
 	return &resp, nil
 }
 
@@ -65,9 +65,9 @@ func (c *Client) BookmarkAddSongBookmark(trackToken string) (*response.BookmarkA
 	}
 
 	var resp response.BookmarkAddSongBookmark
-	err := c.BlowfishJSONCall(c.formatURL("http://", "bookmark.addSongBookmark"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
+
 	return &resp, nil
 }

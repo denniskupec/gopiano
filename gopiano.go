@@ -16,7 +16,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -135,24 +134,11 @@ func (c *Client) formatURL(protocol, method string) string {
 	return protocol + c.description.BaseURL + "?" + urlArgs.Encode()
 }
 
-// Client.BlowfishCall first encrypts the body before calling PandoraCall.
-// Arguments are identical to PandoraCall.
-func (c *Client) BlowfishCall(protocol string, method string, body io.Reader, data interface{}) error {
-	bodyBytes, err := ioutil.ReadAll(body)
-	if err != nil {
-		return err
-	}
+func (c *Client) Call(req request.Type, data interface{}) error {
+	url := c.formatURL(req.Protocol().URL(), req.Method())
 
 	enc := coder.New(c.encrypter)
-	enc.Write(bodyBytes)
-
-	return PandoraCall(c.formatURL(protocol, method), enc, data)
-}
-
-func (c *Client) BlowfishJSONCall(url string, body, data interface{}) error {
-	enc := coder.New(c.encrypter)
-
-	if err := json.NewEncoder(enc).Encode(body); err != nil {
+	if err := json.NewEncoder(enc).Encode(req); err != nil {
 		return err
 	}
 

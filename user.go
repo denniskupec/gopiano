@@ -14,8 +14,7 @@ func (c *Client) UserCanSubscribe() (*response.UserCanSubscribe, error) {
 	}
 
 	var resp response.UserCanSubscribe
-	err := c.BlowfishJSONCall(c.formatURL("http://", "user.canSubscribe"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
 
@@ -42,8 +41,7 @@ func (c *Client) UserCreateUser(username, password, gender, countryCode string, 
 	}
 
 	var resp response.UserCreateUser
-	err := c.BlowfishJSONCall(c.formatURL("https://", "user.createUser"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
 
@@ -64,7 +62,7 @@ func (c *Client) UserEmailPassword(username string) error {
 	}
 
 	var resp interface{}
-	return c.BlowfishJSONCall(c.formatURL("https://", "user.emailPassword"), requestData, &resp)
+	return c.Call(requestData, &resp)
 }
 
 // Client.UserGetBookmarks returns the users bookmarked artists and songs.
@@ -74,10 +72,10 @@ func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
 	requestData := request.GetBookmarks(c.Token())
 
 	var resp response.UserGetBookmarks
-	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getBookmarks"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
+
 	return &resp, nil
 }
 
@@ -90,10 +88,10 @@ func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGe
 	}
 
 	var resp response.UserGetStationList
-	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getStationList"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
+
 	return &resp, nil
 }
 
@@ -103,10 +101,10 @@ func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListCheck
 	requestData := request.GetStationListChecksum(c.Token())
 
 	var resp response.UserGetStationListChecksum
-	err := c.BlowfishJSONCall(c.formatURL("http://", "user.getStationListChecksum"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		return nil, err
 	}
+
 	return &resp, nil
 }
 
@@ -119,7 +117,7 @@ func (c *Client) UserSetQuickMix(stationIDs []string) error {
 	}
 
 	var resp interface{}
-	return c.BlowfishJSONCall(c.formatURL("https://", "user.setQuickMix"), requestData, &resp)
+	return c.Call(requestData, &resp)
 }
 
 // Client.UserSleepSong marks a song to be not played again for 1 month.
@@ -131,5 +129,5 @@ func (c *Client) UserSleepSong(trackToken string) error {
 	}
 
 	var resp interface{}
-	return c.BlowfishJSONCall(c.formatURL("https://", "user.sleepSong"), requestData, &resp)
+	return c.Call(requestData, &resp)
 }

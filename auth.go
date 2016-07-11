@@ -67,8 +67,7 @@ func (c *Client) AuthUserLogin(username, password string) (*response.AuthUserLog
 	}
 
 	var resp response.AuthUserLogin
-	err := c.BlowfishJSONCall(c.formatURL("https://", "auth.userLogin"), requestData, &resp)
-	if err != nil {
+	if err := c.Call(requestData, &resp); err != nil {
 		// TODO Handle error
 		return nil, err
 	}
