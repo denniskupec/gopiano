@@ -5,6 +5,29 @@ package request
 
 import "strings"
 
+type protocol int
+
+func (p protocol) URL() string {
+	switch p {
+	case HTTP:
+		return "http://"
+	case HTTPS:
+		return "https://"
+	default:
+		panic("can't get here")
+	}
+}
+
+const (
+	HTTP protocol = iota
+	HTTPS
+)
+
+type Type interface {
+	Method() string
+	Protocol() protocol
+}
+
 // PartnerLogin -  auth.partnerLogin
 //
 // This request additionally serves as API version validation,
@@ -19,6 +42,14 @@ type PartnerLogin struct {
 	IncludeURLs                bool `json:"includeUrls,omitempty"`
 	ReturnDeviceType           bool `json:"returnDeviceType,omitempty"`
 	ReturnUpdatePromptVersions bool `json:"returnUpdatePromptVersions,omitempty"`
+}
+
+func (PartnerLogin) Method() string {
+	return "auth.partnerLogin"
+}
+
+func (PartnerLogin) Protocol() protocol {
+	return HTTPS
 }
 
 // UserLogin - auth.userLogin
@@ -73,6 +104,14 @@ type UserLogin struct {
 	IncludeAdvertiserAttributes    bool `json:"includeAdvertiserAttributes,omitempty"`
 }
 
+func (UserLogin) Method() string {
+	return "auth.userLogin"
+}
+
+func (UserLogin) Protocol() protocol {
+	return HTTPS
+}
+
 type UserToken struct {
 	SyncTime      int    `json:"syncTime"`
 	UserAuthToken string `json:"userAuthToken"`
@@ -81,11 +120,27 @@ type UserToken struct {
 // GetBookmarks - user.getBookmarks
 type GetBookmarks UserToken
 
+func (GetBookmarks) Method() string {
+	return "user.getBookmarks"
+}
+
+func (GetBookmarks) Protocol() protocol {
+	return HTTP
+}
+
 // GetStationListChecksum - user.getStationListChecksum
 //
 // To check if the station list was modified by another client the checksum
 // can be fetched. The response contains the new checksum.
 type GetStationListChecksum UserToken
+
+func (GetStationListChecksum) Method() string {
+	return "user.getStationListChecksum"
+}
+
+func (GetStationListChecksum) Protocol() protocol {
+	return HTTP
+}
 
 // CanSubscribe - user.canSubscribe
 //
@@ -96,6 +151,14 @@ type CanSubscribe struct {
 	//
 
 	IapVendor string `json:"iapVendor,omitempty"`
+}
+
+func (CanSubscribe) Method() string {
+	return "user.canSubscribe"
+}
+
+func (CanSubscribe) Protocol() protocol {
+	return HTTP
 }
 
 // CreateUser - user.createUser
@@ -125,6 +188,14 @@ type CreateUser struct {
 	IncludeAdvertiserAttributes     bool `json:"includeAdvertiserAttributes,omitempty"`
 }
 
+func (CreateUser) Method() string {
+	return "user.createUser"
+}
+
+func (CreateUser) Protocol() protocol {
+	return HTTPS
+}
+
 // EmailPassword - user.emailPassword
 type EmailPassword struct {
 	SyncTime         int    `json:"syncTime"`
@@ -132,6 +203,14 @@ type EmailPassword struct {
 	//
 
 	Username string `json:"username"`
+}
+
+func (EmailPassword) Method() string {
+	return "user.emailPassword"
+}
+
+func (EmailPassword) Protocol() protocol {
+	return HTTPS
 }
 
 // GetStationList - user.getStationList
@@ -149,12 +228,28 @@ type GetStationList struct {
 	IncludeExplanations             bool `json:"includeExplanations,omitempty"`
 }
 
+func (GetStationList) Method() string {
+	return "user.getStationList"
+}
+
+func (GetStationList) Protocol() protocol {
+	return HTTP
+}
+
 // SetQuickMix - user.setQuickMix
 type SetQuickMix struct {
 	UserToken
 	//
 
 	QuickMixStationIDs []string `json:"quickMixStationIds"`
+}
+
+func (SetQuickMix) Method() string {
+	return "user.setQuickMix"
+}
+
+func (SetQuickMix) Protocol() protocol {
+	return HTTP
 }
 
 type trackAction struct {
@@ -169,16 +264,48 @@ type trackAction struct {
 // A song can be banned from all stations temporarily (one month).
 type SleepSong trackAction
 
+func (SleepSong) Method() string {
+	return "user.sleepSong"
+}
+
+func (SleepSong) Protocol() protocol {
+	return HTTP
+}
+
 // ExplainTrack - track.explainTrack
 //
 // A song can be banned from all stations temporarily (one month).
 type ExplainTrack trackAction
 
+func (ExplainTrack) Method() string {
+	return "track.explainTrack"
+}
+
+func (ExplainTrack) Protocol() protocol {
+	return HTTP
+}
+
 // AddArtistBookmark - bookmark.addArtistBookmark
 type AddArtistBookmark trackAction
 
+func (AddArtistBookmark) Method() string {
+	return "bookmark.addArtistBookmark"
+}
+
+func (AddArtistBookmark) Protocol() protocol {
+	return HTTP
+}
+
 // AddSongBookmark - bookmark.addSongBookmark
 type AddSongBookmark trackAction
+
+func (AddSongBookmark) Method() string {
+	return "bookmark.addSongBookmark"
+}
+
+func (AddSongBookmark) Protocol() protocol {
+	return HTTP
+}
 
 // MusicSearch - music.search
 //
@@ -190,6 +317,14 @@ type MusicSearch struct {
 	SearchText           string `json:"searchText"`
 	IncludeNearMatches   bool   `json:"includeNearMatches,omitempty"`
 	IncludeGenreStations bool   `json:"includeGenreStations,omitempty"`
+}
+
+func (MusicSearch) Method() string {
+	return "music.search"
+}
+
+func (MusicSearch) Protocol() protocol {
+	return HTTP
 }
 
 // CreateStation - station.createStation
@@ -206,6 +341,14 @@ type CreateStation struct {
 	MusicToken string `json:"musicToken,omitempty"`
 }
 
+func (CreateStation) Method() string {
+	return "station.createStation"
+}
+
+func (CreateStation) Protocol() protocol {
+	return HTTP
+}
+
 // AddMusic - station.addMusic
 //
 // Search results can be used to add new seeds to an existing station.
@@ -215,6 +358,14 @@ type AddMusic struct {
 
 	StationToken string `json:"stationToken"`
 	MusicToken   string `json:"musicToken"`
+}
+
+func (AddMusic) Method() string {
+	return "station.addMusic"
+}
+
+func (AddMusic) Protocol() protocol {
+	return HTTP
 }
 
 // DeleteMusic - station.deleteMusic
@@ -227,6 +378,14 @@ type DeleteMusic struct {
 	SeedID string `json:"seedId"`
 }
 
+func (DeleteMusic) Method() string {
+	return "station.deleteMusic"
+}
+
+func (DeleteMusic) Protocol() protocol {
+	return HTTP
+}
+
 // RenameStation - station.renameStation
 type RenameStation struct {
 	UserToken
@@ -235,12 +394,28 @@ type RenameStation struct {
 	StationName  string `json:"stationName"`
 }
 
+func (RenameStation) Method() string {
+	return "station.renameStation"
+}
+
+func (RenameStation) Protocol() protocol {
+	return HTTP
+}
+
 // DeleteStation - station.deleteStation
 type DeleteStation struct {
 	UserToken
 	//
 
 	StationToken string `json:"stationToken"`
+}
+
+func (DeleteStation) Method() string {
+	return "station.deleteStation"
+}
+
+func (DeleteStation) Protocol() protocol {
+	return HTTP
 }
 
 // GetStation - station.getStation
@@ -252,6 +427,14 @@ type GetStation struct {
 
 	StationToken              string `json:"stationToken"`
 	IncludeExtendedAttributes bool   `json:"includeExtendedAttributes,omitempty"`
+}
+
+func (GetStation) Method() string {
+	return "station.getStation"
+}
+
+func (GetStation) Protocol() protocol {
+	return HTTP
 }
 
 // AddFeedback - station.addFeedback
@@ -267,6 +450,14 @@ type AddFeedback struct {
 	IsPositive   bool   `json:"isPositive"` // 'false' bans track
 }
 
+func (AddFeedback) Method() string {
+	return "station.addFeedback"
+}
+
+func (AddFeedback) Protocol() protocol {
+	return HTTP
+}
+
 // DeleteFeedback - station.deleteFeedback
 //
 // Feedback added by Rate track can be removed from the station.
@@ -277,10 +468,26 @@ type DeleteFeedback struct {
 	FeedbackID string `json:"feedbackId"`
 }
 
+func (DeleteFeedback) Method() string {
+	return "station.deleteFeedback"
+}
+
+func (DeleteFeedback) Protocol() protocol {
+	return HTTP
+}
+
 // GetGenreStations - station.getGenreStations
 //
 // Pandora provides a list of predefined stations (“genre stations”).
 type GetGenreStations UserToken
+
+func (GetGenreStations) Method() string {
+	return "station.getGenreStations"
+}
+
+func (GetGenreStations) Protocol() protocol {
+	return HTTP
+}
 
 // GetGenreStationsChecksum - station.getGenreStationsChecksum
 type GetGenreStationsChecksum struct {
@@ -288,6 +495,14 @@ type GetGenreStationsChecksum struct {
 	//
 
 	IncludeGenreCategoryAdURL bool `json:"includeGenreCategoryAdUrl,omitempty"`
+}
+
+func (GetGenreStationsChecksum) Method() string {
+	return "station.getGenreStationsChecksum"
+}
+
+func (GetGenreStationsChecksum) Protocol() protocol {
+	return HTTP
 }
 
 // ShareStation - station.shareStation
@@ -302,12 +517,28 @@ type ShareStation struct {
 	Emails       []string `json:"emails"`
 }
 
+func (ShareStation) Method() string {
+	return "station.shareStation"
+}
+
+func (ShareStation) Protocol() protocol {
+	return HTTP
+}
+
 // TransformSharedStation - station.transformSharedStation
 type TransformSharedStation struct {
 	UserToken
 	//
 
 	StationToken string `json:"stationToken"`
+}
+
+func (TransformSharedStation) Method() string {
+	return "station.transformSharedStation"
+}
+
+func (TransformSharedStation) Protocol() protocol {
+	return HTTP
 }
 
 // GetPlaylist - station.getPlaylist
@@ -335,6 +566,14 @@ type GetPlaylist struct {
 	IncludeCompletePlaylist bool `json:"includeCompletePlaylist,omitempty"`
 	IncludeTrackOptions     bool `json:"includeTrackOptions,omitempty"`
 	AudioAdPodCapable       bool `json:"audioAdPodCapable,omitempty"`
+}
+
+func (GetPlaylist) Method() string {
+	return "station.getPlaylist"
+}
+
+func (GetPlaylist) Protocol() protocol {
+	return HTTPS
 }
 
 type streamType int
