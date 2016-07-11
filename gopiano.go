@@ -28,7 +28,7 @@ import (
 	"denniskupec.com/gopiano/response"
 )
 
-// Describes a particular type of client to emulate.
+// ClientDescription describes a particular type of client to emulate.
 type ClientDescription struct {
 	DeviceModel string
 	Username    string
@@ -39,7 +39,7 @@ type ClientDescription struct {
 	Version     string
 }
 
-// Class for a Client object.
+// Client information needed to interface with pandora API.
 type Client struct {
 	description      ClientDescription
 	encrypter        *blowfish.Cipher
@@ -51,7 +51,7 @@ type Client struct {
 	userID           string
 }
 
-// Create a new Client with specified ClientDescription
+// NewClient creates a new Client with specified ClientDescription
 func NewClient(d ClientDescription) (*Client, error) {
 	encrypter, err := blowfish.NewCipher([]byte(d.EncryptKey))
 	if err != nil {
@@ -72,7 +72,7 @@ func NewClient(d ClientDescription) (*Client, error) {
 // Some data returned from the Pandora API is encrypted. This decrypts it.
 // The key for the decryption is provided by the ClientDescription.
 func (c *Client) decrypt(data string) (string, error) {
-	chunks := make([]string, 0)
+	var chunks []string
 	for i := 0; i < len(data); i += 16 {
 		var buf [16]byte
 		var decoded, decrypted [8]byte
@@ -87,13 +87,9 @@ func (c *Client) decrypt(data string) (string, error) {
 	return strings.Join(chunks, ""), nil
 }
 
-// Client.PandoraCall is the basic function to send an HTTP POST to pandora.com.
-// Arguments: protocol is either "https://" or "http://", method is whatever must be in
-// the "method" url argument and specifies the remote procedure to call, body is an io.Reader
-// to be passed directly into http.Post, and data is to be passed to json.Unmarshal to parse
-// the JSON response.
-func PandoraCall(callUrl string, body io.Reader) (json.RawMessage, error) {
-	resp, err := http.Post(callUrl, "text/plain", body)
+// PandoraCall is the basic function to send an HTTP POST to pandora.com.
+func PandoraCall(callURL string, body io.Reader) (json.RawMessage, error) {
+	resp, err := http.Post(callURL, "text/plain", body)
 	if err != nil {
 		return nil, err
 	}
@@ -135,6 +131,8 @@ func (c *Client) formatURL(req request.Type) string {
 	return req.Protocol().URL() + c.description.BaseURL + "?" + urlArgs.Encode()
 }
 
+// Call makes the given request to pandora and unmarshals the result into
+// the 'data' argument.
 func (c *Client) Call(req request.Type, data interface{}) error {
 	enc := coder.New(c.encrypter)
 	if err := json.NewEncoder(enc).Encode(req); err != nil {
@@ -149,12 +147,13 @@ func (c *Client) Call(req request.Type, data interface{}) error {
 	return json.Unmarshal(res, data)
 }
 
-// Most calls require a SyncTime int argument (Unix epoch). We store our current time offset
-// but must calculate the SyncTime for each call. This method does that.
+// GetSyncTime returns a calculated SyncTime (Unix epoch) which is required
+// for most calls.
 func (c *Client) GetSyncTime() int {
 	return int(time.Now().Add(c.timeOffset).Unix())
 }
 
+// Token returns UserToken needed for some requests
 func (c *Client) Token() request.UserToken {
 	return request.UserToken{
 		UserAuthToken: c.userAuthToken,

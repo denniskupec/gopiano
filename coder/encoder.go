@@ -8,6 +8,10 @@ import (
 	"golang.org/x/crypto/blowfish"
 )
 
+// New returnd an readwriter that encodes all writes by
+// blowfish encrypting (ECB mode) followed by hex encoding.
+//
+// EOF reads will encrypt the last block padded with 0x00.
 func New(cipher *blowfish.Cipher) io.ReadWriter {
 	return &encoder{blow: cipher}
 }

@@ -5,9 +5,8 @@ import (
 	"denniskupec.com/gopiano/response"
 )
 
-// Client.UserCanSubscribe returns whehter a user is subscribed or can subscribe
+// UserCanSubscribe returns whehter a user is subscribed or can subscribe
 // to the premium Pandora One service.
-// Calls API method "user.canSubscribe"
 func (c *Client) UserCanSubscribe() (*response.UserCanSubscribe, error) {
 	requestData := request.CanSubscribe{
 		UserToken: c.Token(),
@@ -17,10 +16,9 @@ func (c *Client) UserCanSubscribe() (*response.UserCanSubscribe, error) {
 	return &resp, c.Call(requestData, &resp)
 }
 
-// Client.UserCreateUser creates a new Pandora user.
+// UserCreateUser creates a new Pandora user.
 // Argument username must be in the form of an email address. gender must be either "male" or "female".
 // countryCode must be "US".
-// Calls API method "user.createUser"
 func (c *Client) UserCreateUser(username, password, gender, countryCode string, zipCode, birthYear int, emailOptin bool) (*response.UserCreateUser, error) {
 	requestData := request.CreateUser{
 		PartnerAuthToken: c.partnerAuthToken,
@@ -48,8 +46,7 @@ func (c *Client) UserCreateUser(username, password, gender, countryCode string, 
 	return &resp, nil
 }
 
-// Client.UserEmailPassword resends registration email, maybe?
-// Calls API method "user.emaillPassword"
+// UserEmailPassword resends registration email, maybe?
 func (c *Client) UserEmailPassword(username string) error {
 	requestData := request.EmailPassword{
 		Username:         username,
@@ -61,9 +58,8 @@ func (c *Client) UserEmailPassword(username string) error {
 	return c.Call(requestData, &resp)
 }
 
-// Client.UserGetBookmarks returns the users bookmarked artists and songs.
+// UserGetBookmarks returns the users bookmarked artists and songs.
 // Also see BookmarkAddArtistBookmark and BookmarkAddSongBookmark.
-// Calls API method "user.getBookmarks"
 func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
 	requestData := request.GetBookmarks(c.Token())
 
@@ -71,8 +67,7 @@ func (c *Client) UserGetBookmarks() (*response.UserGetBookmarks, error) {
 	return &resp, c.Call(requestData, &resp)
 }
 
-// Client.UserGetStationList gets the list of a users stations.
-// Call API method "user.getStationList"
+// UserGetStationList gets the list of a users stations.
 func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGetStationList, error) {
 	requestData := request.GetStationList{
 		IncludeStationArtURL: includeStationArtURL,
@@ -83,8 +78,7 @@ func (c *Client) UserGetStationList(includeStationArtURL bool) (*response.UserGe
 	return &resp, c.Call(requestData, &resp)
 }
 
-// Client.UserGetStationList returns the checksum of the user's station list.
-// Call API method "user.getStationListChecksum"
+// UserGetStationListChecksum returns the checksum of the user's station list.
 func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListChecksum, error) {
 	requestData := request.GetStationListChecksum(c.Token())
 
@@ -92,8 +86,7 @@ func (c *Client) UserGetStationListChecksum() (*response.UserGetStationListCheck
 	return &resp, c.Call(requestData, &resp)
 }
 
-// Client.UserSetQuickMix selects the stations that should be in the special QuickMix station.
-// Call API method "user.setQuickMix"
+// UserSetQuickMix selects the stations that should be in the special QuickMix station.
 func (c *Client) UserSetQuickMix(stationIDs []string) error {
 	requestData := request.SetQuickMix{
 		QuickMixStationIDs: stationIDs,
@@ -104,8 +97,7 @@ func (c *Client) UserSetQuickMix(stationIDs []string) error {
 	return c.Call(requestData, &resp)
 }
 
-// Client.UserSleepSong marks a song to be not played again for 1 month.
-// Calls API method "user.sleepSong"
+// UserSleepSong marks a song to be not played again for 1 month.
 func (c *Client) UserSleepSong(trackToken string) error {
 	requestData := request.SleepSong{
 		TrackToken: trackToken,

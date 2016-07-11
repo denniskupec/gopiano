@@ -6,11 +6,11 @@ import (
 )
 
 var client *Client
-var p_username, p_password string
+var pUsername, pPassword string
 
 func init() {
-	flag.StringVar(&p_username, "username", "", "Pandora login username")
-	flag.StringVar(&p_password, "password", "", "Pandora login password")
+	flag.StringVar(&pUsername, "username", "", "Pandora login username")
+	flag.StringVar(&pPassword, "password", "", "Pandora login password")
 	flag.Parse()
 }
 
@@ -41,7 +41,7 @@ func Test_AuthPartnerLogin_1(t *testing.T) {
 }
 
 func Test_AuthUserLogin_1(t *testing.T) {
-	response, err := client.AuthUserLogin(p_username, p_password)
+	response, err := client.AuthUserLogin(pUsername, pPassword)
 	if err != nil {
 		t.Error(err)
 	}

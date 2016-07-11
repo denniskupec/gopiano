@@ -10,10 +10,9 @@ import (
 	"denniskupec.com/gopiano/response"
 )
 
-// Client.AuthPartnerLogin establishes a Partner session with provided
+// AuthPartnerLogin establishes a Partner session with provided
 // API username and password and receives a PartnerAuthToken, PartnerID and SyncTime
 // which are stored for later calls.
-// Calls API method "auth.partnerLogin"
 func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 	requestData := request.PartnerLogin{
 		Username:    c.description.Username,
@@ -58,11 +57,11 @@ func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 	return &resp, nil
 }
 
-// Client.AuthUserLogin logs in a username and password pair.
+// AuthUserLogin logs in a username and password pair.
 // Receives the UserAuthToken which is used in subsequent calls.
-// You must call AuthPartnerLogin first, and then either this method or UserCreateUser
-// before you proceed.
-// Calls API method "auth.userLogin"
+//
+// You must call AuthPartnerLogin first, and then either this method
+// or UserCreateUser before you proceed.
 func (c *Client) AuthUserLogin(username, password string) (*response.AuthUserLogin, error) {
 	requestData := request.UserLogin{
 		PartnerAuthToken: c.partnerAuthToken,
