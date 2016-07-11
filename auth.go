@@ -22,16 +22,22 @@ func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 		DeviceModel: c.description.DeviceModel,
 		IncludeURLs: true,
 	}
-	requestDataEncoded, err := json.Marshal(requestData)
-	if err != nil {
-		return nil, err
-	}
-	requestDataReader := bytes.NewReader(requestDataEncoded)
+
 	var resp response.AuthPartnerLogin
-	err = PandoraCall(c.formatURL(requestData), requestDataReader, &resp)
-	if err != nil {
-		// TODO Handle error
-		return nil, err
+	{
+		var buf bytes.Buffer
+		if err := json.NewEncoder(&buf).Encode(requestData); err != nil {
+			return nil, err
+		}
+
+		res, err := PandoraCall(c.formatURL(requestData), &buf)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := json.Unmarshal(res, &resp); err != nil {
+			return nil, err
+		}
 	}
 
 	syncTime, err := c.decrypt(resp.SyncTime)

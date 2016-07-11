@@ -92,26 +92,26 @@ func (c *Client) decrypt(data string) (string, error) {
 // the "method" url argument and specifies the remote procedure to call, body is an io.Reader
 // to be passed directly into http.Post, and data is to be passed to json.Unmarshal to parse
 // the JSON response.
-func PandoraCall(callUrl string, body io.Reader, data interface{}) error {
+func PandoraCall(callUrl string, body io.Reader) (json.RawMessage, error) {
 	resp, err := http.Post(callUrl, "text/plain", body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	var wrap response.Wrapper
 	if err := json.NewDecoder(resp.Body).Decode(&wrap); err != nil {
-		return err
+		return nil, err
 	}
 
 	if wrap.Stat == "fail" {
 		if message, ok := response.ErrorCodeMap[wrap.Code]; ok {
 			wrap.Message = message
 		}
-		return wrap.ErrorResponse
+		return nil, wrap.ErrorResponse
 	}
 
-	return json.Unmarshal(wrap.Result, &data)
+	return wrap.Result, nil
 }
 
 func (c *Client) formatURL(req request.Type) string {
@@ -140,7 +140,12 @@ func (c *Client) Call(req request.Type, data interface{}) error {
 		return err
 	}
 
-	return PandoraCall(c.formatURL(req), enc, data)
+	res, err := PandoraCall(c.formatURL(req), enc)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(res, data)
 }
 
 // Most calls require a SyncTime int argument (Unix epoch). We store our current time offset
