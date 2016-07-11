@@ -114,9 +114,9 @@ func PandoraCall(callUrl string, body io.Reader, data interface{}) error {
 	return json.Unmarshal(wrap.Result, &data)
 }
 
-func (c *Client) formatURL(protocol, method string) string {
+func (c *Client) formatURL(req request.Type) string {
 	urlArgs := url.Values{
-		"method": {method},
+		"method": {req.Method()},
 	}
 
 	if c.partnerID != "" {
@@ -131,18 +131,16 @@ func (c *Client) formatURL(protocol, method string) string {
 		urlArgs.Add("auth_token", c.userAuthToken)
 	}
 
-	return protocol + c.description.BaseURL + "?" + urlArgs.Encode()
+	return req.Protocol().URL() + c.description.BaseURL + "?" + urlArgs.Encode()
 }
 
 func (c *Client) Call(req request.Type, data interface{}) error {
-	url := c.formatURL(req.Protocol().URL(), req.Method())
-
 	enc := coder.New(c.encrypter)
 	if err := json.NewEncoder(enc).Encode(req); err != nil {
 		return err
 	}
 
-	return PandoraCall(url, enc, data)
+	return PandoraCall(c.formatURL(req), enc, data)
 }
 
 // Most calls require a SyncTime int argument (Unix epoch). We store our current time offset

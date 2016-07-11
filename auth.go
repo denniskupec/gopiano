@@ -28,7 +28,7 @@ func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 	}
 	requestDataReader := bytes.NewReader(requestDataEncoded)
 	var resp response.AuthPartnerLogin
-	err = PandoraCall(c.formatURL("https://", "auth.partnerLogin"), requestDataReader, &resp)
+	err = PandoraCall(c.formatURL(requestData), requestDataReader, &resp)
 	if err != nil {
 		// TODO Handle error
 		return nil, err
