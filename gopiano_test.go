@@ -20,11 +20,11 @@ func init() {
 func Test_Decrypt_1(t *testing.T) {
 	expected := []byte("foobar")
 	testString := []byte("95b6027f2d427dc0")
-	decrypted, err := client.decrypt(testString)
+	n, err := client.decrypt(testString)
 	if err != nil {
 		t.Error(err)
 	}
-	if bytes.Compare(decrypted, expected) != 0 {
+	if bytes.Compare(testString[:n], expected) != 0 {
 		t.Error("decrypt failed.")
 	} else {
 		t.Log("decrypt passed")

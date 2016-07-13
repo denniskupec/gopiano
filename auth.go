@@ -39,11 +39,14 @@ func (c *Client) AuthPartnerLogin() (*response.AuthPartnerLogin, error) {
 		}
 	}
 
-	syncTime, err := c.decrypt([]byte(resp.SyncTime))
-	if err != nil {
+	syncTime := []byte(resp.SyncTime)
+	if _, err := c.decrypt(syncTime); err != nil {
 		return nil, err
 	}
+
+	// syncTime = syncTime[:n] // TODO: why does the next line ignore this?
 	resp.SyncTime = string(syncTime[4:14])
+
 	i, err := strconv.ParseInt(resp.SyncTime, 10, 32)
 	if err != nil {
 		return nil, err

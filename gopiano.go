@@ -13,7 +13,6 @@ by these client methods.
 package gopiano
 
 import (
-	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"io"
@@ -72,12 +71,11 @@ func NewClient(d ClientDescription) (*Client, error) {
 // Some data returned from the Pandora API is encrypted. This decrypts it.
 // The key for the decryption is provided by the ClientDescription.
 //
-// Decryption is done inplace.
-func (c *Client) decrypt(data []byte) ([]byte, error) {
-	var n int
+// Decryption is done inplace and returns the number of bytes successfully decrypted.
+func (c *Client) decrypt(data []byte) (n int, err error) {
 	for in, out := data, data; 16 <= len(in); in, out = in[16:], out[8:] {
 		if _, err := hex.Decode(out[:8], in[:16]); err != nil {
-			return nil, err
+			return n, err
 		}
 
 		c.decrypter.Decrypt(out[:8], out[:8])
@@ -85,7 +83,11 @@ func (c *Client) decrypt(data []byte) ([]byte, error) {
 		n += 8
 	}
 
-	return bytes.TrimRight(data[:n], "\x00"), nil
+	for 0 < n && data[n-1] == '\x00' {
+		n--
+	}
+
+	return n, nil
 }
 
 // PandoraCall is the basic function to send an HTTP POST to pandora.com.
