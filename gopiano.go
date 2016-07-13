@@ -74,23 +74,18 @@ func NewClient(d ClientDescription) (*Client, error) {
 //
 // Decryption is done inplace.
 func (c *Client) decrypt(data []byte) ([]byte, error) {
-	var i int
-	for i = 1; (i*16)-1 < len(data); i++ {
-		var (
-			in_  = i * 16
-			in   = data[in_-16 : in_]
-			out_ = i * 8
-			out  = data[out_-8 : out_]
-		)
-
-		if _, err := hex.Decode(out, in); err != nil {
+	var n int
+	for in, out := data, data; 16 <= len(in); in, out = in[16:], out[8:] {
+		if _, err := hex.Decode(out[:8], in[:16]); err != nil {
 			return nil, err
 		}
 
-		c.decrypter.Decrypt(out, out)
+		c.decrypter.Decrypt(out[:8], out[:8])
+
+		n += 8
 	}
 
-	return bytes.TrimRight(data[:(i-1)*8], "\x00"), nil
+	return bytes.TrimRight(data[:n], "\x00"), nil
 }
 
 // PandoraCall is the basic function to send an HTTP POST to pandora.com.
