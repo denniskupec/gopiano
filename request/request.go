@@ -603,33 +603,34 @@ var streamTypeNames = [...]string{
 }
 
 func (st streamType) String() string {
-	stn := streamTypeNames
-	if st&HTTP_40_AAC_MONO == 0 {
-		stn[0] = ""
+	tmp := streamTypeNames
+	stn := tmp[0:0]
+	if st&HTTP_40_AAC_MONO != 0 {
+		stn = append(stn, streamTypeNames[0])
 	}
-	if st&HTTP_64_AAC == 0 {
-		stn[1] = ""
+	if st&HTTP_64_AAC != 0 {
+		stn = append(stn, streamTypeNames[1])
 	}
-	if st&HTTP_32_AACPLUS == 0 {
-		stn[2] = ""
+	if st&HTTP_32_AACPLUS != 0 {
+		stn = append(stn, streamTypeNames[2])
 	}
-	if st&HTTP_64_AACPLUS == 0 {
-		stn[3] = ""
+	if st&HTTP_64_AACPLUS != 0 {
+		stn = append(stn, streamTypeNames[3])
 	}
-	if st&HTTP_24_AACPLUS_ADTS == 0 {
-		stn[4] = ""
+	if st&HTTP_24_AACPLUS_ADTS != 0 {
+		stn = append(stn, streamTypeNames[4])
 	}
-	if st&HTTP_32_AACPLUS_ADTS == 0 {
-		stn[5] = ""
+	if st&HTTP_32_AACPLUS_ADTS != 0 {
+		stn = append(stn, streamTypeNames[5])
 	}
-	if st&HTTP_64_AACPLUS_ADTS == 0 {
-		stn[6] = ""
+	if st&HTTP_64_AACPLUS_ADTS != 0 {
+		stn = append(stn, streamTypeNames[6])
 	}
-	if st&HTTP_128_MP3 == 0 {
-		stn[7] = ""
+	if st&HTTP_128_MP3 != 0 {
+		stn = append(stn, streamTypeNames[7])
 	}
-	if st&HTTP_32_WMA == 0 {
-		stn[8] = ""
+	if st&HTTP_32_WMA != 0 {
+		stn = append(stn, streamTypeNames[8])
 	}
-	return strings.Join(stn[:], ",")
+	return strings.Join(stn, ",")
 }
